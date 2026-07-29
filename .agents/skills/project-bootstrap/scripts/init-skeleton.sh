@@ -22,6 +22,8 @@ skipped=()
 # 占位文件必须是 .gitkeep 而非 .md——rules/agents/commands/output-styles
 # 四个目录会把每个 .md 当成生效配置读取。
 DIRS=(
+  .agents/skills
+  .codex/skills
   .claude/rules
   .claude/skills
   .claude/agents
@@ -63,4 +65,4 @@ if [ -n "$strays" ]; then
   echo "$strays" >&2
 fi
 
-echo "骨架就绪。settings.json / CLAUDE.md / .gitignore / PROJECT-GUIDE.md 由 skill 后续步骤生成。"
+echo "骨架就绪。settings.json / AGENTS.md（含 CLAUDE.md 软链）/ .gitignore / PROJECT-GUIDE.md 由 skill 后续步骤生成。"

@@ -1,19 +1,23 @@
 ---
-description: 为一个功能/模块走一轮「增量访谈 → SPEC 定稿 → 拆 GitHub issues」。PRD 渐进式演进时反复调用，每轮只处理已想清楚的部分；PRD 变更后也用它同步已有 SPEC 与未完成 issue。用法 /feature-spec <模块名或本轮增量说明>。
+name: feature-spec
+description: 为一个功能/模块走一轮「增量访谈 → SPEC 定稿 → 拆 GitHub issues」。PRD 渐进式演进时反复调用，每轮只处理已想清楚的部分；PRD 变更后也用它同步已有 SPEC 与未完成 issue。仅限用户显式调用（Claude Code 中 /feature-spec <模块名或本轮增量说明>，Codex 中 $feature-spec），不要自动触发。
 argument-hint: <模块名或本轮 PRD 增量的说明>
+disable-model-invocation: true
 ---
 
 # 功能 SPEC 循环
 
-本 skill 随 projkit 样板分发到每个新项目。前提假设：**PRD 和原型是渐进式的**——每轮只定稿当前已想清楚的模块，未定的显式写进「不在范围内」，下一轮 PRD 完善后再跑一遍本 skill。不要等全部想清楚才开工，也不要替 PRD 没说的部分编需求。
+本 skill 随 projkit 样板分发到每个新项目，真身在 `.agents/skills/`（SKILL.md 开放标准的通用目录），`.claude/skills/` 与 `.codex/skills/` 里是指向它的软链——Claude Code 和 Codex 调用的是同一份文件。
 
-**本轮目标 = `$ARGUMENTS`。** 为空则先问用户：这轮要处理哪个功能/模块？PRD 或原型在哪？
+前提假设：**PRD 和原型是渐进式的**——每轮只定稿当前已想清楚的模块，未定的显式写进「不在范围内」，下一轮 PRD 完善后再跑一遍本 skill。不要等全部想清楚才开工，也不要替 PRD 没说的部分编需求。
+
+**本轮目标 = 用户随命令传入的参数**（Claude Code 中即 `$ARGUMENTS`）。为空则先问用户：这轮要处理哪个功能/模块？PRD 或原型在哪？
 
 全程用简体中文交流。两个拍板点必须停下来等用户确认：**SPEC 定稿**、**issue 列表**。
 
 ## 配套文件索引
 
-按你当前要做的事查表，不要预先全读。路径以 `${CLAUDE_SKILL_DIR}/` 开头（下表省略前缀）。
+按你当前要做的事查表，不要预先全读。下表文件都在本 skill 目录（本文件所在目录）下。
 
 | 你现在要做什么 | 读这个 |
 |---|---|
@@ -34,7 +38,7 @@ argument-hint: <模块名或本轮 PRD 增量的说明>
 ## 第 2 步：增量访谈
 
 - 开始前先读 `reference.md` §一（分维度的访谈问题库）。
-- 用 AskUserQuestion 详细采访：技术实现、UI/UX、边界情况、顾虑和权衡。**一次只问一个问题**，等回答再问下一个。不问显而易见的问题，深挖用户可能没考虑到的难点。
+- 逐个提问详细采访（Claude Code 中用 AskUserQuestion 工具，其他工具用普通提问）：技术实现、UI/UX、边界情况、顾虑和权衡。**一次只问一个问题**，等回答再问下一个。不问显而易见的问题，深挖用户可能没考虑到的难点。
 - 只访谈本轮模块。访谈中冒出来的、用户还没想清楚的事项，不要追问到底——记下来，第 3 步写进「不在范围内」。
 
 ## 第 3 步：SPEC 定稿（拍板点 1）

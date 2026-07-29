@@ -10,12 +10,15 @@
 
 | 路径 | 用途 | 触发条件（什么时候往里加东西） |
 |---|---|---|
-| `CLAUDE.md` | 每次会话自动注入的项目说明：命令、约定、坑（签进 git） | Claude 第二次犯同样的错 → 写一行进去 |
+| `AGENTS.md` | 项目说明的**唯一事实来源**：命令、约定、坑（签进 git）。Codex / Cursor / Gemini CLI 直接读，Claude Code 经 CLAUDE.md 软链读，每次会话自动注入 | agent 第二次犯同样的错 → 写一行进去 |
+| `CLAUDE.md` | **AGENTS.md 的软链**（签进 git）——Claude Code 只认这个文件名 | 不单独维护——改就改 AGENTS.md，软链保证两边永远一致 |
 | `CLAUDE.local.md` | 个人本地偏好（已 gitignore） | 有只属于你、不适合团队共享的偏好时 |
 | `.claude/settings.json` | 团队共享设置：权限白名单、hooks 注册等（签进 git） | 同一个权限提示点过三次 → 加进 `permissions.allow`；某事必须每次自动发生 → 配 hook |
 | `.claude/settings.local.json` | 个人设置覆盖（已 gitignore） | — |
 | `.claude/rules/` | 路径作用域规则，Claude 碰到匹配文件时才加载 | 某类文件有跨位置的统一约束（如「API 层必须做输入校验」） |
-| `.claude/skills/` | 可复用的多步骤流程，调用时才加载全文 | 同一个 prompt 或流程手打/手贴第三遍（`feature-spec` 随样板预装，是唯一例外——它属于方法论本身） |
+| `.agents/skills/` | 共享 skill 的**真身**（SKILL.md 是开放标准，`.agents/skills/` 是 Codex / Cursor / Gemini CLI 等采用的通用目录） | 同一个 prompt 或流程手打/手贴第三遍 → 新共享 skill 放这里并建双软链（`feature-spec` 随样板预装，是唯一预填例外——它属于方法论本身） |
+| `.claude/skills/` | Claude Code 的 skill 发现目录，只放指向 `.agents/skills/` 的软链 | 不单独维护——随共享 skill 一起建链（真身直接放这里的情况极少：仅当 skill 深度绑定 CC 专属能力且确实不该被其他工具看到） |
+| `.codex/skills/` | Codex 的 skill 发现目录，只放指向 `.agents/skills/` 的软链 | 不单独维护——随共享 skill 一起建链 |
 | `.claude/agents/` | 自定义 subagent（独立上下文，只返回摘要） | 某类副任务总把主对话灌满之后不再引用的输出 |
 | `.claude/commands/` | 自定义斜杠命令（**已并入 skills**，仍可用） | 基本不用建内容——skill 是超集，且支持配套文件与自动调用 |
 | `.claude/hooks/` | hook 用的脚本文件（**注册在 settings.json 里**，不是放这就生效） | 配第一个 command 型 hook 时，脚本放这里，用 `${CLAUDE_PROJECT_DIR}/.claude/hooks/x.sh` 引用 |
@@ -26,6 +29,17 @@
 | `.mcp.json` | 项目级 MCP 服务器声明（仓库根目录，**签进 git**） | 团队都要连的外部服务（数据库、issue 系统、Figma） |
 | `specs/` | SPEC 文件（PRD 访谈的产出） | 每个较大功能开工前跑 `/feature-spec` 产出；PRD 变更后也用它同步 |
 | `docs/` | 给人看的文档（含本文件） | 随时 |
+
+### 工具中立优先
+
+开发不一定只用 Claude Code（还可能用 Codex、Cursor 等），本样板的总原则是：**凡存在跨工具开放标准的配置，真身一律放中立位置，各工具目录只放软链；没有中立标准的才留在工具专属目录。**
+
+| 配置 | 跨工具标准 | 落点 |
+|---|---|---|
+| 项目说明 | ✅ AGENTS.md | 真身 `AGENTS.md`，`CLAUDE.md` 软链 |
+| skill | ✅ SKILL.md 开放标准（agentskills.io，20+ 工具通用） | 真身 `.agents/skills/`，`.claude/skills/`、`.codex/skills/` 软链 |
+| rules / hooks / settings / subagents / workflows / output-styles | ❌ 各家形态不同（Codex 对应 config.toml 等） | 留在 `.claude/`，等标准出现再迁 |
+| `specs/`、`docs/` | 本就中立 | 原地 |
 
 ### 为什么目录预建、文件不预建
 
@@ -64,16 +78,17 @@
 2. **配套文件是否从 SKILL.md 里被引用过**——没引用等于 Claude 不知道它存在，建了也白建
 3. 拆出去的内容是否真的实现了延迟加载
 
-随样板预装的 `feature-spec` 就是这个结构的活例子：`SKILL.md` + `reference.md` + `examples.md`，没有多余目录。等 SKILL.md 逼近 500 行、或出现需要执行的脚本时再拆新目录。
+随样板预装的 `feature-spec`（真身在 `.agents/skills/`）就是这个结构的活例子：`SKILL.md` + `reference.md` + `examples.md`，没有多余目录。等 SKILL.md 逼近 500 行、或出现需要执行的脚本时再拆新目录。
 
-## 官方标注的坑（模版已避开 / 使用时注意）
+## 已知的坑（官方标注 + 样板注意，模版已避开的也列出）
 
 1. **四个目录里不要放 README**（`rules/`、`agents/`、`commands/`、`output-styles/`）——每个 `.md` 都会被当成生效配置，详见上文「为什么目录预建、文件不预建」。
 2. **`.claude/settings.json` 只从启动 claude 的那个目录加载**，不像 CLAUDE.md 会逐级向上继承。从子目录启动时，根目录的 settings 完全不生效。
-3. **CLAUDE.md 是建议不是强制**。写多少个「YOU MUST」都不保证遵守；「必须每次发生」的事（lint、拦截危险命令）要配成 hook（写在 settings.json 里，可以直接让 Claude 帮你写）。
+3. **AGENTS.md / CLAUDE.md 是建议不是强制**。写多少个「YOU MUST」都不保证遵守；「必须每次发生」的事（lint、拦截危险命令）要配成 hook（写在 settings.json 里，可以直接让 Claude 帮你写）。
 4. **issue 和进度管理不在本仓库目录里**——用 GitHub Issues + `gh` CLI。进度的事实来源是 issue 看板和 PR 状态，不是任何人的 Claude Code 会话。
-5. **auto memory（Claude 自己积累的经验）是机器本地的**，不进 git、不跨机器。要团队共享的知识必须显式写进 CLAUDE.md 或 rules。
-6. **像养护代码一样养护配置**：CLAUDE.md 指定 owner、改动走 PR review、每 3-6 个月修剪一次（重大模型发布后感觉性能进入平台期时也该修剪）。
+5. **auto memory（Claude 自己积累的经验）是机器本地的**，不进 git、不跨机器。要团队共享的知识必须显式写进 AGENTS.md 或 rules。
+6. **像养护代码一样养护配置**：AGENTS.md 指定 owner、改动走 PR review、每 3-6 个月修剪一次（重大模型发布后感觉性能进入平台期时也该修剪）。
+7. **样板里有三条软链，Windows 成员要额外一步**：`CLAUDE.md → AGENTS.md`、`.claude/skills/feature-spec` 和 `.codex/skills/feature-spec` → `../../.agents/skills/feature-spec`。需要 `git config core.symlinks true` 且系统开启开发者模式，否则 checkout 出来的软链是只含目标路径一行文字的普通文件，工具读到的就是这行字。搞不定时退化方案：换成真实拷贝，并约定只改真身（AGENTS.md / `.agents/skills/` 下的文件）、改后手动同步。
 
 ## 初始化之后：从骨架到第一个 PR
 
@@ -83,7 +98,9 @@ PRD 和原型通常是**渐进式**的——不必等全部想清楚才开工，
 2. 进入下面的标准开发循环，把这批 issue 做完。
 3. PRD 又完善一块 → 回到 1。
 
-一次性把 SPEC 写全，只是这个循环恰好跑一圈的特例。`/project-bootstrap` 时做过 SPEC 访谈的，第一圈已经走完，直接从 2 开始；当时跳过了的，从 1 开始。
+一次性把 SPEC 写全，只是这个循环恰好跑一圈的特例。`/project-bootstrap` 时做过 SPEC 访谈的，第一圈已经走完，直接从 2 开始；当时跳过了的，从 1 开始。feature-spec 是跨工具共享的 skill（真身在 `.agents/skills/`）：Claude Code 中用 `/feature-spec` 调用，Codex 中用 `$feature-spec`（或在 `/skills` 列表里选）——本文其余地方写 `/feature-spec` 时同理换算；它只接受显式调用，agent 不会自作主张进入访谈。
+
+projkit 母本升级后（问题库补充、同步规则改进），对本项目**重跑 `/project-bootstrap`** 即可刷新 feature-spec 和本文件——刷新只碰方法论文件，AGENTS.md、settings、specs、issues 都不动，覆盖前会展示 diff。
 
 **PRD 改到已定稿的模块**时，同样跑 `/feature-spec`：先更新 SPEC，再对照未完成的 issue——issue 是 mini-spec，SPEC 变了它就过期了，该改就改、该关就关；已完成部分的变更开新 issue，不重开旧的。
 

@@ -1,8 +1,8 @@
-# 成品样例：CLAUDE.md
+# 成品样例：AGENTS.md
 
-本文件由 `SKILL.md` 在**第 3 步（生成 CLAUDE.md）**引用，用来对齐颗粒度。**这是示例不是模板**——`templates/CLAUDE.md.template` 才是要填充的模板。SPEC 和 issue 的样例在 `../feature-spec/examples.md`。
+本文件由 `SKILL.md` 在**第 3 步（生成 AGENTS.md）**引用，用来对齐颗粒度。**这是示例不是模板**——`templates/AGENTS.md.template` 才是要填充的模板。SPEC 和 issue 的样例在 `../feature-spec/examples.md`。
 
-一个真实项目的 CLAUDE.md，28 行。注意它**只写 Claude 猜不到的信息**：没有目录结构描述、没有「使用 TypeScript」这类从代码一眼可见的事、没有「写干净代码」这类自明道理。
+一个真实项目的 AGENTS.md（项目说明文件，CLAUDE.md 软链指向它），28 行。注意它**只写 agent 猜不到的信息**：没有目录结构描述、没有「使用 TypeScript」这类从代码一眼可见的事、没有「写干净代码」这类自明道理。
 
 ```markdown
 # orderhub
@@ -28,4 +28,4 @@
 - e2e 测试会清库，不要对着有数据的库跑
 ```
 
-**为什么这样写**：每一行都通过了「删掉它 Claude 会犯错吗」的检验。「金额用整数分」不写就会用浮点；「迁移只增不改」不写就会去编辑旧文件。
+**为什么这样写**：每一行都通过了「删掉它 agent 会犯错吗」的检验。「金额用整数分」不写就会用浮点；「迁移只增不改」不写就会去编辑旧文件。

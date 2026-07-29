@@ -1,3 +1,6 @@
+# macOS
+.DS_Store
+
 # Claude Code 个人本地文件（不进 git）
 CLAUDE.local.md
 .claude/settings.local.json

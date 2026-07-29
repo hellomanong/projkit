@@ -2,7 +2,7 @@
 
 本文件由 `SKILL.md` 在**第 3 步（生成 AGENTS.md）**引用，用来对齐颗粒度。**这是示例不是模板**——`templates/AGENTS.md.template` 才是要填充的模板。SPEC 和 issue 的样例在 `../feature-spec/examples.md`。
 
-一个真实项目的 AGENTS.md（项目说明文件，CLAUDE.md 软链指向它），28 行。注意它**只写 agent 猜不到的信息**：没有目录结构描述、没有「使用 TypeScript」这类从代码一眼可见的事、没有「写干净代码」这类自明道理。
+一个真实项目的 AGENTS.md（项目说明文件，CLAUDE.md 软链指向它）。注意它**只写 agent 猜不到的信息**：没有目录结构描述、没有「使用 TypeScript」这类从代码一眼可见的事、没有「写干净代码」这类自明道理。
 
 ```markdown
 # orderhub

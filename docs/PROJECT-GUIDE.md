@@ -26,7 +26,7 @@
 | `.claude/workflows/` | Dynamic Workflow 编排脚本 | 单次对话协调不过来的大规模并行任务（迁移、审计） |
 | `.claude/agent-memory/<name>/` | subagent 的 `memory: project` 档，**可签进 git 团队共享** | 想让某个 subagent 跨会话积累经验、且这份经验值得团队共享时 |
 | `.claude/agent-memory-local/<name>/` | subagent 的 `memory: local` 档（已 gitignore，故未预建） | 同上但不想进 git 时；由 CC 自动创建 |
-| `.mcp.json` | 项目级 MCP 服务器声明（仓库根目录，**签进 git**） | 团队都要连的外部服务（数据库、issue 系统、Figma） |
+| `.mcp.json` | 项目级 MCP 服务器声明（Claude Code 格式，仓库根目录，**签进 git**） | 团队都要连的外部服务（数据库、issue 系统、Figma） |
 | `specs/` | SPEC 文件（PRD 访谈的产出） | 每个较大功能开工前跑 `/feature-spec` 产出；PRD 变更后也用它同步 |
 | `docs/` | 给人看的文档（含本文件） | 随时 |
 
@@ -39,6 +39,7 @@
 | 项目说明 | ✅ AGENTS.md | 真身 `AGENTS.md`，`CLAUDE.md` 软链 |
 | skill | ✅ SKILL.md 开放标准（agentskills.io，20+ 工具通用） | 真身 `.agents/skills/`，`.claude/skills/`、`.codex/skills/` 软链 |
 | rules / hooks / settings / subagents / workflows / output-styles | ❌ 各家形态不同（Codex 对应 config.toml 等） | 留在 `.claude/`，等标准出现再迁 |
+| MCP 服务器声明 | ❌ 各家自有格式（`.mcp.json` 是 Claude Code 的；Codex 在 config.toml 里配） | `.mcp.json` 留仓库根，其他工具各自另配 |
 | `specs/`、`docs/` | 本就中立 | 原地 |
 
 ### 为什么目录预建、文件不预建
@@ -88,7 +89,7 @@
 4. **issue 和进度管理不在本仓库目录里**——用 GitHub Issues + `gh` CLI。进度的事实来源是 issue 看板和 PR 状态，不是任何人的 Claude Code 会话。
 5. **auto memory（Claude 自己积累的经验）是机器本地的**，不进 git、不跨机器。要团队共享的知识必须显式写进 AGENTS.md 或 rules。
 6. **像养护代码一样养护配置**：AGENTS.md 指定 owner、改动走 PR review、每 3-6 个月修剪一次（重大模型发布后感觉性能进入平台期时也该修剪）。
-7. **样板里有三条软链，Windows 成员要额外一步**：`CLAUDE.md → AGENTS.md`、`.claude/skills/feature-spec` 和 `.codex/skills/feature-spec` → `../../.agents/skills/feature-spec`。需要 `git config core.symlinks true` 且系统开启开发者模式，否则 checkout 出来的软链是只含目标路径一行文字的普通文件，工具读到的就是这行字。搞不定时退化方案：换成真实拷贝，并约定只改真身（AGENTS.md / `.agents/skills/` 下的文件）、改后手动同步。
+7. **样板里有软链，Windows 成员要额外一步**：`CLAUDE.md → AGENTS.md`，加上 `.claude/skills/`、`.codex/skills/` 下**每个**共享 skill 各一条（指向 `../../.agents/skills/<名字>`）——数量随共享 skill 增加而增长，核对时以 `find . -type l` 的实际输出为准，别数清单。需要 `git config core.symlinks true` 且系统开启开发者模式，否则 checkout 出来的软链是只含目标路径一行文字的普通文件，工具读到的就是这行字。搞不定时退化方案：换成真实拷贝，并约定只改真身（AGENTS.md / `.agents/skills/` 下的文件）、改后手动同步。
 
 ## 初始化之后：从骨架到第一个 PR
 
@@ -100,7 +101,7 @@ PRD 和原型通常是**渐进式**的——不必等全部想清楚才开工，
 
 一次性把 SPEC 写全，只是这个循环恰好跑一圈的特例。`/project-bootstrap` 时做过 SPEC 访谈的，第一圈已经走完，直接从 2 开始；当时跳过了的，从 1 开始。feature-spec 是跨工具共享的 skill（真身在 `.agents/skills/`）：Claude Code 中用 `/feature-spec` 调用，Codex 中用 `$feature-spec`（或在 `/skills` 列表里选）——本文其余地方写 `/feature-spec` 时同理换算；它只接受显式调用，agent 不会自作主张进入访谈。
 
-projkit 母本升级后（问题库补充、同步规则改进），对本项目**重跑 `/project-bootstrap`** 即可刷新 feature-spec 和本文件——刷新只碰方法论文件，AGENTS.md、settings、specs、issues 都不动，覆盖前会展示 diff。
+projkit 母本升级后（问题库补充、同步规则改进），可以刷新本项目的 feature-spec 和本文件。project-bootstrap skill 只存在于 projkit 仓库、不随样板分发，所以要**在 projkit 的 checkout 里开会话**，跑 `/project-bootstrap <本项目路径>`（Codex 中 `$project-bootstrap`）——刷新只碰方法论文件，AGENTS.md、settings、specs、issues 都不动，覆盖前会展示 diff。
 
 **PRD 改到已定稿的模块**时，同样跑 `/feature-spec`：先更新 SPEC，再对照未完成的 issue——issue 是 mini-spec，SPEC 变了它就过期了，该改就改、该关就关；已完成部分的变更开新 issue，不重开旧的。
 

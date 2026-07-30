@@ -44,6 +44,7 @@ DIRS=(
   docs
   docs/adr
   docs/prd
+  docs/prd/解读
   specs
 )
 

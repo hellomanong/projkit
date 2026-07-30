@@ -28,7 +28,7 @@
 | `.claude/agent-memory-local/<name>/` | subagent 的 `memory: local` 档（已 gitignore，故未预建） | 同上但不想进 git 时；由 CC 自动创建 |
 | `.mcp.json` | 项目级 MCP 服务器声明（Claude Code 格式，仓库根目录，**签进 git**） | 团队都要连的外部服务（数据库、issue 系统、Figma） |
 | `specs/` | 正式 SPEC（`/spec-design` 的产出；进行中另有 `<模块>.draft.md` 草稿，同样进 git，定稿即删） | 每个较大功能开工前经 `/spec-interview` → `/spec-design` 产出；需求变更后重跑同步 |
-| `docs/` | 给人看的文档（含本文件；`ARCHITECTURE.md` 项目整体架构图由首轮方案设计创建、每轮设计拍板后更新） | 随时 |
+| `docs/` | 给人看的文档（含本文件；`ARCHITECTURE.md` 架构导读——全局图 + 分层导读 + 横切约定 + 决策索引，由首轮方案设计创建、结构变化时更新） | 随时 |
 | `docs/prd/` | PRD 原文与原型文档的落点（只是访谈输入，不是事实来源） | 拿到 PRD / 原型文档就放进来，跑 `/spec-interview` 时引用 |
 | `docs/adr/` | 需求决策记录（**追加式**：每轮访谈一份新文件，旧的永不改写，决策史全程可追） | `/spec-interview` 每轮产出；人工要补记决策也放这 |
 
@@ -103,7 +103,7 @@ PRD 和原型通常是**渐进式**的——不必等全部想清楚才开工，
 
 一次性把 SPEC 写全，只是这个循环恰好跑一圈的特例。`/project-bootstrap` 时做过访谈和设计的，第一圈已经走完，直接从 2 开始；当时跳过了的，从 1 开始。三个 spec-* 是跨工具共享的 skill（真身在 `.agents/skills/`）：Claude Code 中用 `/spec-interview` 等斜杠调用，Codex 中用 `$spec-interview` 等（或在 `/skills` 列表里选）——本文写斜杠命令时同理换算；它们只接受显式调用，agent 不会自作主张启动。
 
-三环各自独立断点：**每个 skill 的草稿 = 它正式产物文件名的 `.md` 换成 `.draft.md`**（如 `specs/订单.draft.md`），随写随落盘、**进 git**（同一工作树换会话随时能接；提交并推送后，换人、换机器也能接力）；产物转正即删草稿。环与环之间只靠产物文件衔接：ADR 更新了，设计要不要跟进由你决定（重跑 `/spec-design`）；没有 SPEC 就跑 `/spec-issues` 会被提示先设计——**访谈完不想设计、设计完不想拆 issue，都可以停，回来接着跑对应的 skill 就行**。需求决策 ADR 追加式保留全部历史；issue 执行状态只看 GitHub、本地不记进度。项目整体架构图住 `docs/ARCHITECTURE.md`（首轮设计拍板后创建，PRD 已明确但未开工的模块画「规划中」虚线），每轮设计拍板后更新；SPEC 里另有本轮模块图。
+三环各自独立断点：**每个 skill 的草稿 = 它正式产物文件名的 `.md` 换成 `.draft.md`**（如 `specs/订单.draft.md`），随写随落盘、**进 git**（同一工作树换会话随时能接；提交并推送后，换人、换机器也能接力）；产物转正即删草稿。环与环之间只靠产物文件衔接：ADR 更新了，设计要不要跟进由你决定（重跑 `/spec-design`）；没有 SPEC 就跑 `/spec-issues` 会被提示先设计——**访谈完不想设计、设计完不想拆 issue，都可以停，回来接着跑对应的 skill 就行**。需求决策 ADR 追加式保留全部历史；issue 执行状态只看 GitHub、本地不记进度。架构导读住 `docs/ARCHITECTURE.md`（全局图 + 分层导读 + 横切约定 + 关键决策索引；首轮设计拍板后创建，只在结构或全局约定变化时更新，「为什么」一律住 ADR）；SPEC 里另有本轮模块图。
 
 projkit 母本升级后（问题库补充、同步规则改进），可以刷新本项目的三个 spec-* skill 和本文件。project-bootstrap skill 只存在于 projkit 仓库、不随样板分发，所以要**在 projkit 的 checkout 里开会话**，跑 `/project-bootstrap <本项目路径>`（Codex 中 `$project-bootstrap`）——刷新只碰方法论文件，AGENTS.md、settings、specs、issues 都不动，覆盖前会展示 diff。
 

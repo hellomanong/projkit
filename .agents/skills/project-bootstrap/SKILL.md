@@ -14,34 +14,26 @@ allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/init-skeleton.sh *)
 
 **样板仓库根目录（下称 `<projkit>`）= 本 skill 目录（本 SKILL.md 所在目录，Claude Code 中即 `${CLAUDE_SKILL_DIR}`）的上三级**——本 skill 可能从任意工作目录被调用，所有指向样板的路径都必须基于本 skill 目录解析，不要假设当前目录就是 projkit。
 
-全程用简体中文与用户交流。有三个「拍板点」必须停下来等用户确认：AGENTS.md（项目说明）内容、SPEC 定稿、issue 列表。
+全程用简体中文与用户交流。本 skill 自己的拍板点是 **AGENTS.md（项目说明）内容**；第 4/5 步委托的三个 spec-* skill 各有自己的拍板点，以它们的 SKILL.md 为准。
 
 ## 配套文件索引
 
-**按你当前要做的事查表，不要预先全读。** 下表路径均相对本 skill 目录。SPEC/issue 的规范和样例住在同级共享 skill `../feature-spec/` 里——第 4、5 步与新项目里的 `/feature-spec` 是同一套流程，共用同一份规范。
+**按你当前要做的事查表，不要预先全读。** 下表路径均相对本 skill 目录。第 4/5 步委托的三个 spec-* skill 自带各自的 reference/examples，由它们的 SKILL.md 自己指引，不在此表。
 
 | 你现在要做什么 | 读/执行这个 |
 |---|---|
 | 在目标目录建出全部标准目录 | **执行** `scripts/init-skeleton.sh <目标目录>`（不用读它的内容） |
 | 生成 settings.json / .gitignore | `templates/settings.json.template`、`templates/gitignore.template` |
 | 生成 AGENTS.md，但不确定该写多细、写哪些 | `examples.md`（含「为什么这样写」的逐行说明） |
-| 要开始 SPEC 访谈，不知道该问什么 | `../feature-spec/reference.md` §一 访谈问题库（按技术/UI/边界/权衡分维度） |
-| 写 SPEC，不确定格式和颗粒度 | `../feature-spec/examples.md` §一 |
-| 写完 SPEC，想判断它合不合格 | `../feature-spec/reference.md` §二 三要素检验标准 + 常见失败模式 |
-| 用户说验证步骤/范围写得不好，要返工 | `../feature-spec/reference.md` §二「常见失败模式」表，对症修 |
-| 要拆 issue，不确定拆多细、怎么算自包含 | `../feature-spec/reference.md` §三 issue = mini-spec |
-| 写 issue 正文，不确定格式 | `../feature-spec/examples.md` §二 |
-
-**只建骨架、不做 SPEC 的话，上表后六行的参考文件一个都不用读**——走不到那一步就不该付这份上下文成本。
 
 ## 拷贝来源对照
 
 | 新项目文件 | 来源 |
 |---|---|
-| 目录结构 | 照 `<projkit>` 根目录的结构建（不含 claude-code-best-practices.md；`.agents/skills/` 里只拷贝 feature-spec，不拷贝本 skill 及其软链） |
+| 目录结构 | 照 `<projkit>` 根目录的结构建（不含 claude-code-best-practices.md；`.agents/skills/` 里只拷贝三个 spec-*，不拷贝本 skill 及其软链） |
 | `docs/PROJECT-GUIDE.md` | `<projkit>/docs/PROJECT-GUIDE.md` 原样拷贝 |
-| `.agents/skills/feature-spec/` | `<projkit>/.agents/skills/feature-spec/` 整个目录原样拷贝（真身；后续每轮 SPEC 靠它） |
-| `.claude/skills/feature-spec`、`.codex/skills/feature-spec` | 相对软链，各指向 `../../.agents/skills/feature-spec`（拷贝后创建） |
+| `.agents/skills/spec-interview/`、`spec-design/`、`spec-issues/` | `<projkit>` 对应三个目录原样拷贝（真身；后续每轮需求→设计→拆分靠它们） |
+| `.claude/skills/`、`.codex/skills/` 下各三条软链 | 相对软链，各指向 `../../.agents/skills/<对应 skill>`（拷贝后创建，共六条） |
 | `.claude/settings.json` | 本 skill 目录 `templates/settings.json.template` |
 | `.gitignore` | 本 skill 目录 `templates/gitignore.template`（已存在则只追加缺失条目） |
 | `AGENTS.md` | 本 skill 目录 `templates/AGENTS.md.template` 填充生成（见第 3 步）——项目说明的唯一事实来源 |
@@ -49,20 +41,20 @@ allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/init-skeleton.sh *)
 
 ## 刷新模式（对已初始化项目重跑）
 
-**判定**：目标目录**同时**有 `docs/PROJECT-GUIDE.md` 和 `AGENTS.md`（或指向它的 CLAUDE.md）才算已初始化，进入刷新模式。只有其一不算——可能是上次初始化中途断了，也可能是项目恰好自带同名文件：把检测到的现状告诉用户，问清是继续初始化还是刷新；继续初始化就正常走第 1~6 步（各步骤幂等，已有的部分自动跳过）。
+**判定**：目标目录**同时**有 `docs/PROJECT-GUIDE.md` 和 `AGENTS.md`（或指向它的 CLAUDE.md）才算已初始化，进入刷新模式。只有其一不算——可能是上次初始化中途断了，也可能是项目恰好自带同名文件：把检测到的现状告诉用户，问清是继续初始化还是刷新；继续初始化就正常走第 1~6 步（各步骤幂等，已有的部分自动跳过）。用户在缺 AGENTS.md 的情况下坚持只刷新：照做四件事，但第 3 件事**跳过 `CLAUDE.md` 软链**（目标不存在，建了就是悬空链），汇总里说明缺口、建议改走初始化补齐。
 
 刷新模式**只做四件事**，做完输出汇总直接结束，不走第 1~6 步：
 
-1. 重跑 `<本 skill 目录>/scripts/init-skeleton.sh <目标目录>`（幂等，只补缺失——projkit 后来新增的标准目录靠这步补齐，否则同步来的 PROJECT-GUIDE.md 会描述一个项目里不存在的目录）。
-2. **逐文件同步**（不要「删目录重拷」）`.agents/skills/feature-spec/` 和 `docs/PROJECT-GUIDE.md` 到 `<projkit>` 最新版：有差异的文件先展示 diff、经用户确认再覆盖；目标目录有而 projkit 没有的文件一律保留（从文件状态无法区分是项目自增还是 projkit 已删除），在汇总里列出、由用户决定去留。任何一类都不要静默冲掉。
-3. 检查三条软链（`CLAUDE.md`、`.claude/skills/feature-spec`、`.codex/skills/feature-spec`）：缺失则补建；已是软链但 `readlink` 目标不对则改正指向（不涉及用户数据，改完在汇总里说明）；位置上已存在**真实文件/目录（不是软链）**时不要直接替换——先展示现状问用户（可能是 Windows 退化拷贝方案或有意为之，见 PROJECT-GUIDE.md「坑」第 7 条），确认走软链才替换。确认保留拷贝形态的：两条 skill 拷贝把第 2 条同步后的最新内容**镜像进去**（退化方案的约定就是改真身后手动同步，刷新时替用户做掉）；`CLAUDE.md` 拷贝的源是**本项目自己的 AGENTS.md**（不是 projkit 的任何文件），而刷新不改 AGENTS.md——两者不一致时只提示用户对齐，不要拿「最新版」去灌它。
+1. 重跑 `<本 skill 目录>/scripts/init-skeleton.sh <目标目录>`（幂等，只补缺失——projkit 后来新增的标准目录靠这步补齐，否则同步来的 PROJECT-GUIDE.md 会描述一个项目里不存在的目录）。脚本输出（新建了哪些、游离 .md 告警）纳入收尾汇总如实转述。
+2. **逐文件同步**（不要「删目录重拷」）三个 `.agents/skills/spec-*/` 目录和 `docs/PROJECT-GUIDE.md` 到 `<projkit>` 最新版：有差异的文件先展示 diff、经用户确认再覆盖；目标目录有而 projkit 没有的文件一律保留（从文件状态无法区分是项目自增还是 projkit 已删除），在收尾汇总里列出、由用户事后决定去留——不当场逐文件阻塞询问。任何一类都不要静默冲掉。
+3. 检查软链（`CLAUDE.md`，加上 `.claude/skills/`、`.codex/skills/` 下每个 spec-* 各一条，共七条）：缺失则补建；已是软链但 `readlink` 目标不对则改正指向（不涉及用户数据，改完在汇总里说明）；位置上已存在**真实文件/目录（不是软链）**时不要直接替换——先展示现状问用户（可能是 Windows 退化拷贝方案或有意为之，见 PROJECT-GUIDE.md「坑」第 7 条），确认走软链才替换——替换前先 diff 拷贝与真身，拷贝里有真身没有的本地改动就先并入真身（或经用户确认放弃），再删拷贝建链。确认保留拷贝形态的：skill 拷贝把第 2 条同步后的最新内容**镜像进去**（退化方案的约定就是改真身后手动同步，刷新时替用户做掉）。`CLAUDE.md` 是真实文件时**不发起「是否切软链」的询问**（那是初始化第 3 步的事），只做内容层面的对齐提示：它的源是**本项目自己的 AGENTS.md**（不是 projkit 的任何文件），而刷新不改 AGENTS.md——两者不一致时提示用户对齐，不要拿「最新版」去灌它。补建软链后顺手删掉该 skills 目录里的 `.gitkeep`（第 1 件事重跑脚本可能在空目录里放了占位）。
 4. 其余一概不动：AGENTS.md、settings.json、.gitignore、specs/、issues 都属于项目自己，刷新与它们无关。
 
 ## 第 1 步：环境检查
 
 - 确认目标目录：不存在则创建；已有较多文件则列出来并询问用户是否确认在此初始化。
 - 目标目录不是 git 仓库则在其中 `git init`。
-- `gh auth status` 检查 GitHub CLI；未安装或未登录时告知用户**另开一个终端**跑 `gh auth login`（交互式向导需要真实终端，agent 会话内没有交互 TTY，跑了会挂起）。非交互替代：把 `GH_TOKEN` 设进 **agent 会话自己的进程环境**（启动会话前 export，或写进 `.claude/settings.json` 的 `env`；在另开的终端里 export 对本会话无效）即可直接用 gh，或 `gh auth login --with-token < 存有PAT的文件`——该选项从 stdin 读 token，裸跑会卡住。此项不阻塞后续步骤。
+- `gh auth status` 检查 GitHub CLI；未安装或未登录时告知用户**另开一个终端**跑 `gh auth login`（交互式向导需要真实终端，agent 会话内没有交互 TTY，跑了会挂起）。非交互替代：把 `GH_TOKEN` 设进 **agent 会话自己的进程环境**（启动会话前 export，或写进 `.claude/settings.json` 的 `env`；在另开的终端里 export 对本会话无效）即可直接用 gh，或 `gh auth login --with-token < 存有PAT的文件`——该选项从 stdin 读 token，裸跑会卡住。此项不阻塞第 1~4、6 步；**第 5 步拆 issue 必须已登录**，走到那一步还没登录就先停下补登录。
 
 ## 第 2 步：生成目录结构
 
@@ -82,35 +74,34 @@ allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/init-skeleton.sh *)
 
 项目说明写在 `AGENTS.md`（开放标准，Codex / Cursor / Gemini CLI 直接读），`CLAUDE.md` 只是指向它的软链——Claude Code 认这个文件名，会跟随软链读到同一份内容。
 
-- 逐个提问问清楚（Claude Code 中用 AskUserQuestion 工具）：项目名与一句话定位、技术栈、构建/测试/lint 命令（还没有就写 TODO）。
+- 逐个提问问清楚（Claude Code 中用 AskUserQuestion 工具，其他工具用普通提问）：项目名与一句话定位、技术栈、构建/测试/lint 命令（还没有就写 TODO）、AGENTS.md 的维护 owner（没有就填 TODO）。
 - 先读 `examples.md`，对齐颗粒度。
 - 按模版填充，全文尽量控制在 60 行以内、硬上限 200 行。只写 agent 猜不到的信息；不写目录结构描述、不写显而易见的语言惯例。逐行自检：「删掉它 agent 会犯错吗？不会就删。」
 - 老项目已有**真实的** CLAUDE.md 或 AGENTS.md 时，以已有内容为底、只补模版缺的部分，不要丢弃用户写过的东西。
 - 把生成结果给用户看，确认后落盘为 `AGENTS.md`，再**在目标目录内**执行 `ln -s AGENTS.md CLAUDE.md`——软链必须建在目标目录里，不要在别的 cwd 裸跑。已有真实 CLAUDE.md 时：内容并入 AGENTS.md 且经用户确认后，先删掉原文件再建链（裸 `ln -s` 会报 File exists）。
 
-## 第 4 步：SPEC 访谈（拍板点 2，可跳过）
+## 第 4 步：需求访谈与设计定稿（可跳过）
 
-本步骤就是 `../feature-spec/SKILL.md` 第 1~3 步在 bootstrap 里跑第一轮——**访谈规则、SPEC 三要素、格式要求以该文件为准，读它照做，不在这里重复**。两处换算：它引用的**配套文件**（`reference.md`/`examples.md`）相对路径以它所在目录为基准解析，而 `specs/` 等项目产物一律写到**目标目录**；它说的「本轮目标 = 随命令传入的参数（`$ARGUMENTS`）」在 bootstrap 里**不适用**——bootstrap 的参数是目标目录，本轮要做哪个模块在访谈开始时单独问用户。bootstrap 特有的事项：
+依次运行 `../spec-interview/SKILL.md` 与 `../spec-design/SKILL.md` 的流程——**拍板点、草稿约定、规范与样例全以它们为准，读它们照做，不在这里重复**。换算三条：它们说的「命令参数」在 bootstrap 里不适用——本轮做哪个模块在访谈开始时单独问用户；所有产物（`docs/adr/`、`specs/<模块>.md`、`docs/ARCHITECTURE.md`）一律写到**目标目录**；两个 skill 各自收尾的提交提示**照常执行**——目标仓库刚 `git init`，第一笔就是 initial commit，第 6 步不再重复、只提交剩余改动。bootstrap 特有的事项：
 
-- 询问用户是否已有 PRD / 原型（哪怕只是初稿）。完全没有则跳到第 6 步。**PRD / 原型还在演进不是跳过的理由**——只访谈、只定稿当前已想清楚的模块，未定的显式写进「不在范围内」（注明「PRD 未定，下轮再议」），后续每轮 PRD 完善后在新项目里跑 `/feature-spec` 继续。
-- SPEC 写入**目标目录**的 `specs/<模块>.md`——文件名一律用模块名，后续轮次的 feature-spec 只认这个命名，不要用 `SPEC.md` 这类通名。
-- 请用户评审定稿后再进入下一步。定稿的是**本轮模块**，不是全部功能。
+- 询问用户是否已有 PRD / 原型（哪怕只是初稿）。完全没有则跳到第 6 步。**PRD / 原型还在演进不是跳过的理由**——只定稿当前已想清楚的模块，未定的进「未决问题」与「不在范围内」，后续在新项目里跑 `/spec-interview`、`/spec-design` 继续。
+- 定稿的是**本轮模块**，不是全部功能。
 
-## 第 5 步：拆 GitHub issues（拍板点 3，可跳过）
+## 第 5 步：拆 GitHub issues（可跳过）
 
-本步骤就是 `../feature-spec/SKILL.md` 第 4 步——**前置条件、拆分粒度、自包含要求、确认流程以该文件为准**。bootstrap 是首轮，没有存量 issue 要同步：直接把**本轮已定稿的 SPEC** 拆成自包含的 issue，完整列表经用户确认后再逐个 `gh issue create`。
+运行 `../spec-issues/SKILL.md` 的流程——**前置条件、对账规则、拍板与执行全以它为准**。可跳过：issue 什么时候拆都行，以后在新项目里跑 `/spec-issues` 一样能拆。换算：老项目 GitHub 上可能早有存量 issue，对账**不可省**；目标仓库还没有远程时不要建议 push。
 
 ## 第 6 步：收尾
 
-- 询问用户是否提交 initial commit。
+- 询问用户是否提交（第 4 步跑过的话 initial commit 已在其收尾产生，这里只提交剩余改动；完全跳过第 4/5 步时，这里才是 initial commit）。
 - 输出汇总：建了什么；哪些目录故意留空、什么触发条件下往哪个目录加东西（引导用户读目标项目的 `docs/PROJECT-GUIDE.md`，尤其是「初始化之后」一节）。
 - 下一步建议，按第 4/5 步的实际走向给：
   - 已拆出 issue → 在**新项目目录**里另开新会话（claude 或 codex 均可），`gh issue view` 认领第一个，走标准开发循环。
-  - 跳过了 SPEC / issue，或 PRD 只定稿了一部分 → 想清楚第一块后在新项目里跑 `/feature-spec <模块>`（Codex 中 `$feature-spec`），产出 SPEC 和 issue 再进开发循环。
+  - 跳过了访谈/设计/issue，或 PRD 只定稿了一部分 → 想清楚第一块后在新项目里依次跑 `/spec-interview <模块>` → `/spec-design <模块>` → `/spec-issues <模块>`（Codex 中 `$` 前缀同名），再进开发循环。
 
 ## 红线
 
-- 不要往新项目的 `.claude/rules/`、`.claude/agents/` 里预填任何内容——配置从实际痛点里长出来。唯一预填例外是随样板分发进 `.agents/skills/` 的 `feature-spec`（及其两条软链）：它和 PROJECT-GUIDE.md 一样属于方法论本身，不是替项目预设的配置。此外不预填。
+- 不要往新项目的 `.claude/rules/`、`.claude/agents/` 里预填任何内容——配置从实际痛点里长出来。唯一预填例外是随样板分发进 `.agents/skills/` 的三个 spec-* skill（及其六条软链）：它们和 PROJECT-GUIDE.md 一样属于方法论本身，不是替项目预设的配置。此外不预填。
 - 不要替用户做「拍板点」的决定。
 - 不要修改 `<projkit>` 下的任何文件——它是样板，只读。所有写操作都发生在目标目录里。
 - 每一步落盘后如实报告结果，失败就说失败。

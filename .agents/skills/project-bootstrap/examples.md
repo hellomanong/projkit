@@ -1,6 +1,6 @@
 # 成品样例：AGENTS.md
 
-本文件由 `SKILL.md` 在**第 3 步（生成 AGENTS.md）**引用，用来对齐颗粒度。**这是示例不是模板**——`templates/AGENTS.md.template` 才是要填充的模板。SPEC 和 issue 的样例在 `../feature-spec/examples.md`。
+本文件由 `SKILL.md` 在**第 3 步（生成 AGENTS.md）**引用，用来对齐颗粒度。**这是示例不是模板**——`templates/AGENTS.md.template` 才是要填充的模板。示例的节标题与模板不一一对应是有意的：它是按「没有内容就删掉本节」裁剪后的成品形态，骨架以模板为准、无内容的节照模板注释删掉即可。SPEC 样例在 `../spec-design/examples.md`，issue 样例在 `../spec-issues/examples.md`。
 
 一个真实项目的 AGENTS.md（项目说明文件，CLAUDE.md 软链指向它）。注意它**只写 agent 猜不到的信息**：没有目录结构描述、没有「使用 TypeScript」这类从代码一眼可见的事、没有「写干净代码」这类自明道理。
 

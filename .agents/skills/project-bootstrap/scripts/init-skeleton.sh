@@ -42,6 +42,8 @@ DIRS=(
   .claude/agent-memory
   .claude/workflows
   docs
+  docs/adr
+  docs/prd
   specs
 )
 

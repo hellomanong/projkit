@@ -1,3 +1,8 @@
+# IDE
+.idea/
+# .vscode/ 是否共享按团队约定，不共享则取消下一行注释
+# .vscode/
+
 # macOS
 .DS_Store
 

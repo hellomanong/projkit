@@ -29,7 +29,7 @@
 | `.mcp.json` | 项目级 MCP 服务器声明（Claude Code 格式，仓库根目录，**签进 git**） | 团队都要连的外部服务（数据库、issue 系统、Figma） |
 | `specs/` | 正式 SPEC（`/spec-design` 的产出；进行中另有 `<模块>.draft.md` 草稿，同样进 git，定稿即删） | 每个较大功能开工前经 `/spec-interview` → `/spec-design` 产出；需求变更后重跑同步 |
 | `docs/` | 给人看的文档（含本文件；`ARCHITECTURE.md` 架构导读——全局图 + 分层导读 + 横切约定 + 决策索引，由首轮方案设计创建、结构变化时更新） | 随时 |
-| `docs/prd/` | PRD 原文与原型文档的落点（只是访谈输入，不是事实来源） | 拿到 PRD / 原型文档就放进来，跑 `/spec-interview` 时引用 |
+| `docs/prd/` | PRD 原文与原型文档的落点（只是访谈输入，不是事实来源）；`<模块>-解读.md` 是访谈产出的**人话版 PRD**，随讲随写、随时可看 | 拿到 PRD / 原型就放进来；解读文档由 `/spec-interview` 逐块生成 |
 | `docs/adr/` | 需求决策记录（**追加式**：每轮访谈一份新文件，旧的永不改写，决策史全程可追） | `/spec-interview` 每轮产出；人工要补记决策也放这 |
 
 ### 工具中立优先
@@ -97,7 +97,7 @@
 
 PRD 和原型通常是**渐进式**的——不必等全部想清楚才开工，也不要替没想清楚的部分编需求。节奏是一个循环：
 
-1. PRD / 原型想清楚一块 → 三环流水线：`/spec-interview <模块>`（访谈出需求决策 ADR）→ `/spec-design <模块>`（方案设计 + Mermaid 图 → SPEC 定稿）→ `/spec-issues <模块>`（拆 GitHub issues——**什么时候拆都行**，不必定稿后立刻拆）。未定的部分显式写进「未决问题」和「不在范围内」，留给下一轮。
+1. 拿到完整 PRD → **先全局后模块**：`/spec-interview 全局`（吃透全貌，产出人话版解读 + 需求决策 ADR）→ `/spec-design 全局`（整体架构 + **模块划分** → ARCHITECTURE.md）→ 对每个模块：按需 `/spec-interview <模块>`（需求没聊透才跑）→ `/spec-design <模块>`（模块方案 → SPEC）→ `/spec-issues <模块>`（拆 GitHub issues——**什么时候拆都行**）。未定的进「未决问题」和「不在范围内」，留给下一轮。
 2. 进入下面的标准开发循环，把这批 issue 做完。
 3. PRD 又完善一块 → 回到 1。
 
@@ -107,7 +107,7 @@ PRD 和原型通常是**渐进式**的——不必等全部想清楚才开工，
 
 projkit 母本升级后（问题库补充、同步规则改进），可以刷新本项目的三个 spec-* skill 和本文件。project-bootstrap skill 只存在于 projkit 仓库、不随样板分发，所以要**在 projkit 的 checkout 里开会话**，跑 `/project-bootstrap <本项目路径>`（Codex 中 `$project-bootstrap`）——刷新只碰方法论文件，AGENTS.md、settings、specs、issues 都不动，覆盖前会展示 diff。
 
-**PRD 改到已定稿的模块**时，按序重跑：`/spec-interview`（新 ADR 记录变更、声明修订了哪条旧决策）→ `/spec-design`（更新 SPEC）→ `/spec-issues`（存量同步——issue 是 mini-spec，SPEC 变了它就过期了，该改就改、该关就关；已完成部分的变更开新 issue，不重开旧的）。
+**需求变更按触及层级分流**：只动单模块内部 → 直接重跑该模块的三环；触及全局（新增/删模块、改边界、横切约定变动）→ 先 `/spec-interview 全局` + `/spec-design 全局`（更新架构导读，**波及清单**写进跨模块 ADR），再只对被点名的模块重走模块轮，没被点名的零改动。两条路最后都靠 `/spec-issues` 存量同步收口——issue 是 mini-spec，SPEC 变了它就过期了，该改就改、该关就关（带原因）；已完成部分的变更开新 issue，不重开旧的。
 
 事实来源分工不要混：`docs/adr/` 是「决策史」（追加式），`specs/` 是「当前意图」（版本演进靠 git，不在文件里记变更日志），issue 看板是「执行状态」，PRD 原文只是访谈的输入。
 

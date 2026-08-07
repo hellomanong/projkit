@@ -83,7 +83,7 @@ allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/init-skeleton.sh *)
 
 ## 第 4 步：需求访谈与设计定稿（可跳过）
 
-依次运行 `../spec-interview/SKILL.md` 与 `../spec-design/SKILL.md` 的流程——**拍板点、草稿约定、规范与样例全以它们为准，读它们照做，不在这里重复**。换算三条：它们说的「命令参数」在 bootstrap 里不适用——本轮做哪个模块在访谈开始时单独问用户；所有产物（`docs/adr/`、`specs/<模块>.md`、`docs/architecture/<模块>.md`、`docs/ARCHITECTURE.md`）一律写到**目标目录**；两个 skill 各自收尾的提交提示**照常执行**——目标仓库刚 `git init`，第一笔就是 initial commit，第 6 步不再重复、只提交剩余改动。bootstrap 特有的事项：
+依次运行 `../spec-interview/SKILL.md` 与 `../spec-design/SKILL.md` 的流程——**拍板点、草稿约定、规范与样例全以它们为准，读它们照做，不在这里重复**。换算三条：它们说的「命令参数」在 bootstrap 里不适用——本轮做哪个模块在访谈开始时单独问用户；所有产物（`docs/adr/`、`specs/<模块>.md`、`docs/ARCHITECTURE.md`）一律写到**目标目录**；两个 skill 各自收尾的提交提示**照常执行**——目标仓库刚 `git init`，第一笔就是 initial commit，第 6 步不再重复、只提交剩余改动。bootstrap 特有的事项：
 
 - 询问用户是否已有 PRD / 原型（哪怕只是初稿）。完全没有则跳到第 6 步。**PRD / 原型还在演进不是跳过的理由**——只定稿当前已想清楚的模块，未定的进「未决问题」与「不在范围内」，后续在新项目里跑 `/spec-interview`、`/spec-design` 继续。
 - 定稿的是**本轮模块**，不是全部功能。

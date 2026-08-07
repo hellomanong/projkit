@@ -43,6 +43,7 @@ DIRS=(
   .claude/workflows
   docs
   docs/adr
+  docs/architecture
   docs/prd
   docs/prd/解读
   docs/review

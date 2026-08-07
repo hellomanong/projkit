@@ -36,6 +36,7 @@ allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/init-skeleton.sh *)
 | `.claude/skills/`、`.codex/skills/` 下各四条软链 | 相对软链，各指向 `../../.agents/skills/<对应 skill>`（拷贝后创建，共八条） |
 | `.claude/settings.json` | 本 skill 目录 `templates/settings.json.template` |
 | `.gitignore` | 本 skill 目录 `templates/gitignore.template`（已存在则只追加缺失条目） |
+| `docs/prd/README.md` | 本 skill 目录 `templates/prd-README.md.template` 原样拷贝（已存在则不动）——外来输入登记表，各类上游参考的目录/URI 由用户后续填充 |
 | `AGENTS.md` | 本 skill 目录 `templates/AGENTS.md.template` 填充生成（见第 3 步）——项目说明的唯一事实来源 |
 | `CLAUDE.md` | 软链到 AGENTS.md（第 3 步顺手创建）——Claude Code 只认这个文件名 |
 
@@ -45,7 +46,7 @@ allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/init-skeleton.sh *)
 
 刷新模式**只做四件事**，做完输出汇总直接结束，不走第 1~6 步：
 
-1. 重跑 `<本 skill 目录>/scripts/init-skeleton.sh <目标目录>`（幂等，只补缺失——projkit 后来新增的标准目录靠这步补齐，否则同步来的 PROJECT-GUIDE.md 会描述一个项目里不存在的目录）。脚本输出（新建了哪些、游离 .md 告警）纳入收尾汇总如实转述。
+1. 重跑 `<本 skill 目录>/scripts/init-skeleton.sh <目标目录>`（幂等，只补缺失——projkit 后来新增的标准目录靠这步补齐，否则同步来的 PROJECT-GUIDE.md 会描述一个项目里不存在的目录）。脚本输出（新建了哪些、游离 .md 告警）纳入收尾汇总如实转述。顺手从模板补建缺失的 `docs/prd/README.md`（已存在则不动——登记内容属于项目自己）。
 2. **逐文件同步**（不要「删目录重拷」）四个 `.agents/skills/spec-*/` 目录和 `docs/PROJECT-GUIDE.md` 到 `<projkit>` 最新版：有差异的文件先展示 diff、经用户确认再覆盖；目标目录有而 projkit 没有的文件一律保留（从文件状态无法区分是项目自增还是 projkit 已删除），在收尾汇总里列出、由用户事后决定去留——不当场逐文件阻塞询问。任何一类都不要静默冲掉。
 3. 检查软链（`CLAUDE.md`，加上 `.claude/skills/`、`.codex/skills/` 下每个 spec-* 各一条，共九条）：缺失则补建；已是软链但 `readlink` 目标不对则改正指向（不涉及用户数据，改完在汇总里说明）；位置上已存在**真实文件/目录（不是软链）**时不要直接替换——先展示现状问用户（可能是 Windows 退化拷贝方案或有意为之，见 PROJECT-GUIDE.md「坑」第 7 条），确认走软链才替换——替换前先 diff 拷贝与真身，拷贝里有真身没有的本地改动就先并入真身（或经用户确认放弃），再删拷贝建链。确认保留拷贝形态的：skill 拷贝把第 2 条同步后的最新内容**镜像进去**（退化方案的约定就是改真身后手动同步，刷新时替用户做掉）。`CLAUDE.md` 是真实文件时**不发起「是否切软链」的询问**（那是初始化第 3 步的事），只做内容层面的对齐提示：它的源是**本项目自己的 AGENTS.md**（不是 projkit 的任何文件），而刷新不改 AGENTS.md——两者不一致时提示用户对齐，不要拿「最新版」去灌它。补建软链后顺手删掉该 skills 目录里的 `.gitkeep`（第 1 件事重跑脚本可能在空目录里放了占位）。
 4. 其余一概不动：AGENTS.md、settings.json、.gitignore、specs/、issues 都属于项目自己，刷新与它们无关。

@@ -33,7 +33,7 @@
 - `template.html` 从本 skill 目录**原样拷贝**，只替换 `<!-- FILL:名字 -->` 与 `<!-- /FILL:名字 -->` 之间的内容区（部分 FILL 区的示例骨架写在注释里，照抄结构再填内容）；模板**既有** CSS、页面骨架、脚本一个字符不动（图专属 style/script 属 FILL 内容区，允许新增，见下条）。
 - 正文章节一律 `<section class="sec" id="sN">`，标题 `<h2><span class="no">§ 0N</span>标题</h2>`，导读用 `<p class="lede">`；小节标题 `<h3><span class="h3no">N.M</span>标题</h3>`。
 - 侧边导航（`FILL:side-nav`）与正文章节一一对应：删了哪节，导航里同步删。
-- 架构图一律**内联 SVG**：`<figure class="flowviz" id="fig-N"><svg viewBox="…" role="img">图</svg><figcaption>图题</figcaption></figure>`——自包含、离线可看，零外部依赖（Mermaid/CDN 已退役）。配色与字体引用模板 CSS 变量（`var(--ink)`、`var(--ink2)`、`var(--line)`、`var(--card)`、`var(--pine-faint)`），整体风格与模板一致。图专属的 `<style>`/`<script>`（hover 高亮、连线强调等）**允许**写在内容区，但选择器与脚本必须以本图 `id` 限定作用域，不得波及模板既有样式与骨架。产物里的 Mermaid 图转译成 SVG 时结构忠实：节点、连线、文字一一对应，不增删。
+- 架构图一律**内联 SVG**，画法照 **`diagram.md` 范式**（结构五件套、排版算法、配色引模板变量、交互按规模两档自适应、骨架样例）——自包含、离线可看，零外部依赖（Mermaid/CDN 已退役）。图专属的 `<style>`/`<script>` 允许写在内容区，但选择器与脚本必须以本图 `id` 限定作用域，不得波及模板既有样式与骨架。产物里的 Mermaid 图转译成 SVG 时结构忠实：节点、连线、文字一一对应，不增删。
 - 成熟度徽标：`<span class="b b-k">SPEC 已定稿</span>`、`<span class="b b-r">设计草稿</span>`、`<span class="b b-g">仅访谈</span>`。
 - 决策清单用 `.prin` 编号条目（`pno` 写 D1、D2…）：`h4` 放问题（来源尾注 `<span class="src">ADR 0003</span>` 挂标题尾），正文 `p` 放方案，代价（如有）跟在方案后。
 - 未决问题用 `<div class="callout amber"><b>请评审 · Q1</b>问题与期望的回答。</div>`；警示/背景说明可用 `.callout.warn` / `.callout.blue`。

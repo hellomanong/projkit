@@ -32,7 +32,7 @@ allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/init-skeleton.sh *)
 |---|---|
 | 目录结构 | 照 `<projkit>` 根目录的结构建（不含 claude-code-best-practices.md；`.agents/skills/` 里只拷贝四个 spec-*，不拷贝本 skill 及其软链） |
 | `docs/PROJECT-GUIDE.md` | `<projkit>/docs/PROJECT-GUIDE.md` 原样拷贝 |
-| `.agents/skills/spec-interview/`、`spec-design/`、`spec-issues/`、`spec-review-doc/` | `<projkit>` 对应四个目录原样拷贝（真身；前三个是每轮需求→设计→拆分的三环，spec-review-doc 按需把产物汇总成评审稿） |
+| `.agents/skills/spec-interview/`、`spec-design/`、`spec-issues/`、`spec-dev-doc/` | `<projkit>` 对应四个目录原样拷贝（真身；前三个是每轮需求→设计→拆分的三环，spec-dev-doc 按需把产物汇总成开发设计稿） |
 | `.claude/skills/`、`.codex/skills/` 下各四条软链 | 相对软链，各指向 `../../.agents/skills/<对应 skill>`（拷贝后创建，共八条） |
 | `.claude/settings.json` | 本 skill 目录 `templates/settings.json.template` |
 | `.gitignore` | 本 skill 目录 `templates/gitignore.template`（已存在则只追加缺失条目） |

@@ -1,6 +1,6 @@
-# 架构图画法范式（内联 SVG）
+# 画图范式（内联 SVG：架构图 · 时序图 · 状态机）
 
-评审稿内**所有**架构图一律按本范式画——现画的稳态详图、从产物转译的图都适用，不是可选项。风格稳定靠三条：结构五件套、配色引模板变量、交互按规模自适应（规则判定，不靠用户记）。
+设计稿内**所有**图一律按本范式画——现画的、从产物转译的都适用，不是可选项。三类图：架构图（§一–§五）、泳道时序图（§六）、状态机（§七）。风格稳定靠三条：结构件套齐全、配色引模板变量、交互按规模自适应（规则判定，不靠用户记）。
 
 ## 一、结构五件套
 
@@ -132,4 +132,85 @@
   });
 })();
 </script>
+```
+
+## 六、泳道时序图范式（核心流程章专用）
+
+svg 挂 `class="seqv"`——共享样式模板已内置（生命线、参与者、箭头、标签、注解、循环框全套类名），图内**只需要自己的 marker defs**，不写 style 块（新增流向色才写，作用域照红线）。
+
+结构件套：
+
+1. **参与者头排**：顶部一排圆角 rect + 名字——本模块组件用 `.actor`（松绿），外部件用 `.actor.ext`（青蓝）；4~6 个为宜，超了说明流程该拆。
+2. **生命线**：每个参与者一条竖虚线 `.ll`，从头排底部到 cap 区上方。
+3. **消息箭头**：自上而下按时间序，y 间距 24~28px；普通消息 `.ar`（灰）、主线/关键写入 `.arg`（松绿加粗）、返回/回执加 `.ard`（虚线）。箭头 marker 用实心三角、灰绿各一枚**固定色**（`fill="#54645d"` / `fill="#1e5c4f"`）——**不要用 context-fill**：共享样式给消息线设了 `fill:none`，context-fill 会跟着变「无」，箭头直接隐形。
+4. **消息标签**：每条箭头上方压白底小 rect `.bg` + 一行字 `.mt`——无标签的消息不许出现。
+5. **注解块**：`.nb` 琥珀底 rect + `.nt` 文字——多步骤合并（如「验收五步：…」）或规则说明放这里，别拆成八条箭头。
+6. **循环框**：流式/重复段用 `.loopbox` 虚线框圈起 + 左上角 `.loopl` 标「循环 · 什么范围」。
+7. **图下 cap 行**（本范式的灵魂，固定两行起）：`.cap` 文字——「时限：…」「失败时：…」；有第三行写补充语义。时限与失败语义不进图就等于没设计。
+
+排版：viewBox 宽 960；生命线等距；标签避让生命线；marker id 用 `<图id>-` 前缀防撞。
+
+最小骨架（两参与者一来一回；真实图按此扩展）：
+
+```html
+<figure class="flowviz">
+  <svg class="seqv" viewBox="0 0 960 220" role="img" aria-label="示例时序">
+    <title>示例时序</title>
+    <desc>一句话：谁发起、走到谁、什么结果。</desc>
+    <defs><marker id="sq-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#54645d"/></marker>
+    <marker id="sq-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1e5c4f"/></marker></defs>
+    <line class="ll" x1="120" y1="52" x2="120" y2="150"/>
+    <line class="ll" x1="480" y1="52" x2="480" y2="150"/>
+    <g class="actor ext"><rect x="72" y="18" width="96" height="28" rx="3"/><text x="120" y="37">调用方</text></g>
+    <g class="actor"><rect x="430" y="18" width="100" height="28" rx="3"/><text x="480" y="37">本模块</text></g>
+    <path class="arg" d="M120 84 L476 84" marker-end="url(#sq-g)"/>
+    <rect class="bg" x="240" y="66" width="120" height="14"/><text class="mt" x="300" y="77">IF-1 提交请求</text>
+    <path class="ar ard" d="M480 120 L124 120" marker-end="url(#sq-a)"/>
+    <rect class="bg" x="250" y="102" width="100" height="14"/><text class="mt" x="300" y="113">结果 / 回执</text>
+    <text class="cap" x="26" y="182">时限：X ms / 秒（P99 口径写明含什么不含什么）。</text>
+    <text class="cap" x="26" y="202">失败时：判断不了就拒（fail-closed）；谁兜底、什么绝不许发生。</text>
+  </svg>
+  <figcaption>图题一句话。</figcaption>
+</figure>
+```
+
+## 七、状态机范式（领域对象与实例生命周期专用）
+
+svg 挂 `class="stm"`——共享样式模板已内置，图内只需要自己的 marker defs（普通转移一个灰 marker，危险转移一个赤 marker）。
+
+结构件套：
+
+1. **起点**：实心圆 `.dot` + 灰箭头指向初始状态。
+2. **状态框**：圆角 rect + 状态名 `.nt` + 一行说明 `.ns`；语义分色——中性 `.st`、健康 `.st.ok`（松绿）、降级/暂存 `.st.warn`（琥珀）、终态/摘除/拒收 `.st.bad`（赤）。
+3. **转移**：普通 `.e`（灰）、危险/不可逆 `.er`（赤）；每条转移旁放触发条件标签 `.lb`（危险的用 `.lbr`），标签不压框。
+4. **图下 cap 行**：`.cap` 写全局规则（如「已进坏副本的请求仍拒绝」「重启回到起点从零重拉」）。
+
+排版：健康主线横排在上层，异常/终态放下层；状态 5~7 个为宜，超了拆图；回环转移用弧线（`<path d="M… Q…">`）绕开框。
+
+最小骨架：
+
+```html
+<figure class="flowviz">
+  <svg class="stm" viewBox="0 0 800 240" role="img" aria-label="示例状态机">
+    <title>示例状态机</title>
+    <desc>一句话：几个状态、主线怎么走、什么情况进坏态。</desc>
+    <defs><marker id="sm-x" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#54645d"/></marker>
+    <marker id="sm-xr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b3372b"/></marker></defs>
+    <circle class="dot" cx="36" cy="72" r="8"/>
+    <g class="st"><rect x="76" y="50" width="150" height="44" rx="5"/><text class="nt" x="151" y="72">准备中</text><text class="ns" x="151" y="87">未就绪 · 不服务</text></g>
+    <g class="st ok"><rect x="330" y="50" width="140" height="44" rx="5"/><text class="nt" x="400" y="72">就绪</text><text class="ns" x="400" y="87">正常服务</text></g>
+    <g class="st bad"><rect x="580" y="50" width="150" height="44" rx="5"/><text class="nt" x="655" y="72">已摘除</text><text class="ns" x="655" y="87">终态 · 等运维</text></g>
+    <line class="e" x1="44" y1="72" x2="76" y2="72" marker-end="url(#sm-x)"/>
+    <line class="e" x1="226" y1="66" x2="330" y2="66" marker-end="url(#sm-x)"/>
+    <text class="lb" x="234" y="58">条件齐备</text>
+    <path class="er" d="M470 66 L580 66" marker-end="url(#sm-xr)"/>
+    <text class="lbr" x="478" y="58">不可逆故障</text>
+    <text class="cap" x="26" y="200">全局规则一句话（如：任何状态下判断不了就拒）。</text>
+  </svg>
+  <figcaption>图题一句话。</figcaption>
+</figure>
 ```

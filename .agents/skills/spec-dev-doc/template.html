@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><!-- FILL:title -->项目名 · 范围 评审稿 vX.Y<!-- /FILL:title --></title>
+<title><!-- FILL:title -->项目名 · 〈模块〉（一句话别名）开发设计稿 v〈版本〉<!-- /FILL:title --></title>
 <style>
 /* ===== 模板铁律：本样式表与页面骨架不许改，生成时只替换 FILL 内容区 ===== */
 :root{
@@ -15,7 +15,7 @@
   --song:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
   --sans:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Cascadia Mono",monospace;
-  --sidebar-w:286px;
+  --sidebar-w:298px;
   --shadow:0 18px 54px rgba(28,55,45,.08);
   --shadow-soft:0 8px 28px rgba(28,55,45,.055);
 }
@@ -35,7 +35,7 @@ code{font-family:var(--mono);font-size:.9em;background:var(--pine-faint);border:
 strong{font-weight:650}
 p{margin:10px 0;max-width:74em}
 
-/* 无障碍与侧边导航 */
+/* 侧边导航 */
 .skip-link{position:fixed;left:18px;top:12px;z-index:100;transform:translateY(-150%);padding:8px 12px;border-radius:8px;background:var(--ink);color:#fff;font-size:13px}
 .skip-link:focus{transform:translateY(0)}
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -45,29 +45,32 @@ p{margin:10px 0;max-width:74em}
   color:#e7f0ec;background:linear-gradient(180deg,#173a32 0%,#112b25 100%);
   border-right:1px solid rgba(255,255,255,.1);box-shadow:16px 0 50px rgba(17,43,37,.12);
 }
-.side-brand{padding:4px 8px 22px;border-bottom:1px solid rgba(255,255,255,.12)}
+.side-brand{padding:4px 8px 20px;border-bottom:1px solid rgba(255,255,255,.12)}
 .side-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.19em;color:#9fc3b6}
-.side-title{font-family:var(--song);font-size:21px;font-weight:700;line-height:1.35;margin-top:8px}
+.side-title{font-family:var(--song);font-size:20px;font-weight:700;line-height:1.35;margin-top:8px}
 .side-review{
-  display:inline-flex;align-items:center;gap:7px;margin-top:13px;padding:4px 9px;
+  display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:4px 9px;
   border:1px solid rgba(255,255,255,.18);border-radius:99px;
   font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#d9e8e2;background:rgba(255,255,255,.06);
 }
-.side-review::before{content:"";width:6px;height:6px;border-radius:50%;background:#e5b95e;box-shadow:0 0 0 4px rgba(229,185,94,.12)}
-.side-nav{overflow:auto;scrollbar-width:thin;padding:18px 4px 12px}
-.side-group{margin:14px 8px 7px;font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:#789f92;text-transform:uppercase}
+.side-review::before{content:"";width:6px;height:6px;border-radius:50%;background:#76c2a8;box-shadow:0 0 0 4px rgba(118,194,168,.14)}
+.side-nav{overflow:auto;scrollbar-width:thin;padding:16px 4px 12px}
+.side-group{margin:14px 8px 6px;font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:#789f92;text-transform:uppercase}
 .side-group:first-child{margin-top:0}
 .side-nav a{
-  position:relative;display:grid;grid-template-columns:34px 1fr;gap:8px;align-items:center;
-  min-height:38px;padding:7px 9px;margin:2px 0;border:0;border-radius:9px;
+  position:relative;display:grid;grid-template-columns:32px 1fr;gap:8px;align-items:center;
+  min-height:36px;padding:6px 9px;margin:2px 0;border:0;border-radius:9px;
   color:#c9dcd5;font-size:12.5px;line-height:1.35;
 }
 .side-nav a:hover{color:#fff;background:rgba(255,255,255,.07);border:0}
 .side-nav a .n{font-family:var(--mono);font-size:10px;color:#7fb09f}
-.side-nav a::after{content:"";position:absolute;left:-4px;top:9px;bottom:9px;width:3px;border-radius:3px;background:transparent}
+.side-nav a::after{content:"";position:absolute;left:-4px;top:8px;bottom:8px;width:3px;border-radius:3px;background:transparent}
 .side-nav a.active,.side-nav a[aria-current="true"]{color:#fff;background:rgba(255,255,255,.1)}
 .side-nav a.active .n,.side-nav a[aria-current="true"] .n{color:#a8d8c7}
 .side-nav a.active::after,.side-nav a[aria-current="true"]::after{background:#76c2a8}
+.side-nav a.sub{grid-template-columns:1fr;min-height:26px;padding:3px 9px 3px 42px;font-size:11.5px;color:#9dbcb2}
+.side-nav a.sub:hover{color:#fff}
+.side-nav a.sub::after{display:none}
 .side-bottom{margin-top:auto;padding:14px 8px 0;border-top:1px solid rgba(255,255,255,.12)}
 .side-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 .side-actions button{
@@ -86,7 +89,7 @@ p{margin:10px 0;max-width:74em}
   position:relative;overflow:hidden;border:1px solid rgba(26,36,32,.7);border-radius:18px;
   box-shadow:var(--shadow);background:rgba(252,253,253,.96);
 }
-.tb-top{display:grid;grid-template-columns:1fr 248px;border-bottom:1px solid var(--line-strong);background:linear-gradient(135deg,rgba(238,244,241,.98),rgba(252,253,253,.95) 62%)}
+.tb-top{display:grid;grid-template-columns:1fr 262px;background:linear-gradient(135deg,rgba(238,244,241,.98),rgba(252,253,253,.95) 62%)}
 .tb-name{padding:38px 38px 32px}
 .tb-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--ink2);margin-bottom:14px}
 .tb-name h1{font-family:var(--song);font-size:31px;font-weight:700;line-height:1.35;letter-spacing:.02em;max-width:760px}
@@ -96,37 +99,13 @@ p{margin:10px 0;max-width:74em}
 .tb-meta div:last-child{border-bottom:none}
 .tb-meta b{font-family:var(--mono);font-weight:400;color:var(--ink2);letter-spacing:.08em}
 .tb-meta span{font-family:var(--mono);font-size:12px}
-.tb-meta .vtag{color:var(--seal);font-weight:700}
-.tb-sign{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));background:rgba(255,255,255,.48)}
-.tb-sign section{padding:12px 12px 14px;border-right:1px solid var(--line)}
-.tb-sign section:last-child{border-right:none}
-.tb-sign .role{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--pine);font-weight:700}
-.tb-sign .who{font-size:11.5px;color:var(--ink2);margin-top:2px}
-.tb-sign .line{margin-top:15px;border-bottom:1px dotted var(--ink2);height:1px}
-.tb-sign .hint{font-family:var(--mono);font-size:9.5px;color:var(--ink2);margin-top:4px;letter-spacing:.06em}
-.stamp{position:absolute;right:25px;top:-20px;width:98px;height:98px;border:3px solid var(--seal);border-radius:50%;color:var(--seal);transform:rotate(-8deg);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:.72;mix-blend-mode:multiply;background:rgba(255,255,255,.25)}
-.stamp::after{content:"";position:absolute;inset:5px;border:1px solid var(--seal);border-radius:50%}
-.stamp .s1{font-family:var(--song);font-size:24px;font-weight:700;letter-spacing:.08em;line-height:1}
-.stamp .s2{font-size:10px;letter-spacing:.18em;margin-top:5px}
-.stamp .s3{font-family:var(--mono);font-size:9px;letter-spacing:.1em;margin-top:2px}
-
-/* 评审综述块（TL;DR） */
-.changes{
-  margin:18px 0 0;background:var(--card);border:1px solid var(--line);border-radius:14px;
-  padding:24px 28px 23px;box-shadow:var(--shadow-soft);
-}
-.changes h3{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--ink2);font-weight:600;margin:0 0 10px}
-.changes p{font-size:13.5px;margin:0 0 10px}
-.review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
-.review-card{padding:13px 14px;border:1px solid var(--line);border-radius:10px;background:#fff}
-.review-card strong{display:block;margin-bottom:4px;font:700 11px var(--mono);letter-spacing:.09em}
-.review-card p{margin:0;font-size:12.5px;line-height:1.65;color:var(--ink2)}
-.review-card.stable{border-top:3px solid var(--pine)}
-.review-card.stable strong{color:var(--pine)}
-.review-card.conditional{border-top:3px solid var(--amber)}
-.review-card.conditional strong{color:var(--amber)}
-.review-card.blocked{border-top:3px solid var(--seal)}
-.review-card.blocked strong{color:var(--seal)}
+.tb-meta .vtag{color:var(--pine);font-weight:700}
+.mb{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line-strong);background:rgba(255,255,255,.5)}
+.mb a{display:flex;flex-direction:column;gap:2px;padding:11px 14px;border-right:1px solid var(--line);border-bottom:0}
+.mb a:last-child{border-right:none}
+.mb a b{font-family:var(--mono);font-size:12.5px;color:var(--pine)}
+.mb a span{font-family:var(--mono);font-size:10px;color:var(--ink2)}
+.mb a:hover{background:var(--pine-faint)}
 
 /* 章节 */
 .sec{
@@ -156,29 +135,26 @@ h4{font-size:14.5px;margin:18px 0 6px}
 ul.plain,ol.plain{margin:8px 0 8px 24px}
 ul.plain li,ol.plain li{margin:6px 0}
 
-/* 模块/概念卡片 */
-.defs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:18px}
-.defs .card{min-width:0;background:var(--card);border:1px solid var(--line);border-top:2px solid var(--pine);border-radius:11px;padding:12px 12px 11px;box-shadow:0 3px 12px rgba(28,55,45,.035)}
-.defs .card.runtime{border-top-color:var(--blue)}
-.defs .abbr{font-family:var(--song);font-size:20px;font-weight:700;color:var(--pine);letter-spacing:.05em}
-.defs .runtime .abbr{color:var(--blue)}
-.defs .full{display:block;overflow-wrap:anywhere;font-family:var(--mono);font-size:8.7px;color:var(--ink2);letter-spacing:.09em;margin-top:1px}
-.defs .cn{font-size:13px;font-weight:700;margin-top:7px}
-.defs .pos{display:block;width:max-content;max-width:100%;font-family:var(--mono);font-size:9px;border:1px solid var(--pine);color:var(--pine);border-radius:3px;padding:0 6px;margin-top:5px;letter-spacing:.07em}
-.defs .runtime .pos{border-color:var(--blue);color:var(--blue)}
-.defs .card p{font-size:11.7px;color:var(--ink2);margin:7px 0 0;line-height:1.58}
-.defs .card p b{color:var(--ink)}
+/* 模块摘要卡 */
+.startcard{display:grid;grid-template-columns:auto 1fr;gap:14px 26px;align-items:center;margin:16px 0 6px;padding:14px 18px;border:1px solid var(--line);border-left:3px solid var(--pine);border-radius:11px;background:var(--card);box-shadow:0 3px 12px rgba(28,55,45,.035)}
+.startcard .sc-k{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--pine);display:block}
+.startcard .sc-pkg{font-family:var(--mono);font-size:13px;font-weight:700;margin-top:2px;display:block}
+.startcard .sc-m{display:flex;gap:22px;flex-wrap:wrap}
+.startcard .sc-m div{display:flex;flex-direction:column}
+.startcard .sc-m b{font-family:var(--song);font-size:19px;font-weight:700;color:var(--ink);line-height:1.2}
+.startcard .sc-m span{font-size:11px;color:var(--ink2)}
+.startcard .sc-focus{grid-column:1/-1;border-top:1px dashed var(--line);padding-top:10px;font-size:13px;color:var(--ink2)}
+.startcard .sc-focus b{color:var(--ink);font-weight:650}
 
-/* 编号条目（决策清单用） */
+/* 编号条目 */
 .prin{margin-top:20px;display:grid;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
 .prin article{display:grid;grid-template-columns:64px 1fr;border-bottom:1px solid var(--line)}
 .prin article:last-child{border-bottom:none}
-.prin .pno{font-family:var(--song);font-size:21px;font-weight:700;color:var(--pine);display:flex;align-items:flex-start;justify-content:center;padding:16px 0;border-right:1px solid var(--line);background:var(--pine-faint)}
+.prin .pno{font-family:var(--song);font-size:19px;font-weight:700;color:var(--pine);display:flex;align-items:flex-start;justify-content:center;padding:16px 0;border-right:1px solid var(--line);background:var(--pine-faint)}
 .prin .pbody{padding:14px 20px 15px}
 .prin .pbody h4{font-size:15px;font-weight:700;margin:0}
 .prin .pbody p{font-size:13.5px;color:var(--ink2);margin:5px 0 0}
 .prin .pbody p b{color:var(--ink)}
-.src{font-family:var(--mono);font-size:11px;color:var(--ink2);letter-spacing:.06em;margin-left:8px;white-space:nowrap}
 
 /* 表格 */
 .twrap{overflow-x:auto;overflow-y:hidden;margin:16px 0;border:1px solid var(--line);border-radius:10px;background:var(--card);box-shadow:0 3px 14px rgba(28,55,45,.035)}
@@ -206,20 +182,6 @@ tbody tr:hover{background:#e8f2ed}
 .callout.amber b:first-child{color:var(--amber)}
 .callout.blue b:first-child{color:var(--blue)}
 
-/* 名词表与时间线 */
-.term{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card);padding:12px 16px;margin:12px 0}
-.term dt{font-weight:700}
-.term dd{margin:3px 0 10px;color:var(--ink2);font-size:13.5px}
-.term dd:last-child{margin-bottom:0}
-.timeline{list-style:none;margin:18px 0 6px;border-left:2px solid var(--line)}
-.timeline li{position:relative;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:baseline;padding:9px 0 9px 26px}
-.timeline li::before{content:"";position:absolute;left:-6px;top:17px;width:10px;height:10px;border-radius:50%;background:var(--card);border:2px solid var(--pine)}
-.timeline li.risk::before{border-color:var(--seal)}
-.timeline .step{font-size:13.5px}
-.timeline .actor{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink);margin-right:8px;white-space:nowrap}
-.timeline .lat{font-family:var(--mono);font-size:11px;color:var(--ink2);white-space:nowrap}
-.seqcap{font-family:var(--song);font-size:16px;font-weight:700;margin:30px 0 4px}
-
 /* 代码与图 */
 pre{background:var(--code-bg);color:var(--code-tx);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.62;margin:14px 0;max-width:100%;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
 pre code{font-size:inherit;background:none;border:0;border-radius:0;padding:0;white-space:pre;color:inherit}
@@ -228,15 +190,47 @@ pre code{font-size:inherit;background:none;border:0;border-radius:0;padding:0;wh
 .flowviz svg{display:block;min-width:760px;width:100%;height:auto}
 .flowviz figcaption{font-size:12.5px;color:var(--ink2);margin-top:10px}
 .flowviz svg text{font-family:inherit}
+.flowcap{margin:6px 0 0;font-size:13px}
+.flowcap b{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--pine)}
+
+/* 时序图共享样式（svg 挂 class="seqv"；画法见 diagram.md §六） */
+.flowviz svg.seqv .ll{stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
+.flowviz svg.seqv .actor rect{fill:var(--pine-soft);stroke:var(--pine);stroke-width:1.2}
+.flowviz svg.seqv .actor.ext rect{fill:var(--blue-soft);stroke:var(--blue);stroke-width:1.1}
+.flowviz svg.seqv .actor text{font-size:12px;font-weight:700;fill:var(--ink);text-anchor:middle}
+.flowviz svg.seqv .ar{stroke:var(--ink2);stroke-width:1.3;fill:none}
+.flowviz svg.seqv .arg{stroke:var(--pine);stroke-width:1.6;fill:none}
+.flowviz svg.seqv .ard{stroke-dasharray:5 4}
+.flowviz svg.seqv .mt{fill:var(--ink);font-size:11px;text-anchor:middle}
+.flowviz svg.seqv .bg{fill:var(--card)}
+.flowviz svg.seqv .nb{fill:var(--amber-soft);stroke:var(--amber);stroke-width:1}
+.flowviz svg.seqv .nt{fill:#5c4310;font-size:10.5px;text-anchor:middle}
+.flowviz svg.seqv .cap{fill:var(--ink2);font-size:10.5px}
+.flowviz svg.seqv .loopbox{fill:none;stroke:var(--pine);stroke-width:1;stroke-dasharray:4 3}
+.flowviz svg.seqv .loopl{fill:var(--pine);font-size:10px;font-weight:700;letter-spacing:.1em}
+/* 状态机共享样式（svg 挂 class="stm"；画法见 diagram.md §七） */
+.flowviz svg.stm .dot{fill:var(--ink)}
+.flowviz svg.stm .st rect{fill:var(--card);stroke:var(--ink2);stroke-width:1.2}
+.flowviz svg.stm .st.ok rect{fill:var(--pine-soft);stroke:var(--pine);stroke-width:1.6}
+.flowviz svg.stm .st.warn rect{fill:var(--amber-soft);stroke:var(--amber);stroke-width:1.3}
+.flowviz svg.stm .st.bad rect{fill:var(--seal-soft);stroke:var(--seal);stroke-width:1.4}
+.flowviz svg.stm .st .nt{font-size:13.5px;font-weight:700;fill:var(--ink);text-anchor:middle}
+.flowviz svg.stm .st .ns{font-size:10.5px;fill:var(--ink2);text-anchor:middle}
+.flowviz svg.stm .e{stroke:#54645d;stroke-width:1.3;fill:none}
+.flowviz svg.stm .er{stroke:#b3372b;stroke-width:1.4;fill:none}
+.flowviz svg.stm .lb{fill:var(--ink2);font-size:10.5px}
+.flowviz svg.stm .lbr{fill:var(--seal);font-size:10.5px;font-weight:600}
+.flowviz svg.stm .cap{fill:var(--ink2);font-size:10.5px}
+
 
 footer{margin-top:38px;border-top:2px solid var(--line-strong);padding:18px 4px 0;display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:11px;color:var(--ink2);letter-spacing:.06em;flex-wrap:wrap}
 .sidebar-toggle,.sidebar-overlay,.to-top{display:none}
 
 @media(max-width:1180px) and (min-width:901px){
-  :root{--sidebar-w:244px}
+  :root{--sidebar-w:250px}
   .sidebar{padding-left:13px;padding-right:13px}
   .wrap{padding-left:30px;padding-right:30px}
-  .side-title{font-size:18px}
+  .side-title{font-size:17px}
   .tb-name h1{font-size:29px}
 }
 @media(max-width:900px){
@@ -260,12 +254,10 @@ footer{margin-top:38px;border-top:2px solid var(--line-strong);padding:18px 4px 
   .tb-meta div{border-right:0}
   .tb-name{padding:34px 24px 27px}
   .tb-name h1{font-size:28px}
-  .stamp{width:86px;height:86px;top:-14px;right:10px}
-  .stamp .s1{font-size:19px}
-  .changes{padding:21px 21px}
-  .review-grid{grid-template-columns:1fr}
+  .mb{grid-template-columns:repeat(2,1fr)}
   .sec{padding:22px 20px 24px}
   .sec>h2{font-size:23px}
+  .startcard{grid-template-columns:1fr}
   .to-top{
     position:fixed;right:16px;bottom:16px;z-index:20;display:flex;align-items:center;justify-content:center;
     width:42px;height:42px;border:1px solid var(--line);border-radius:50%;background:#fff;
@@ -277,28 +269,25 @@ footer{margin-top:38px;border-top:2px solid var(--line-strong);padding:18px 4px 
 @media(max-width:600px){
   body{font-size:14px}
   .wrap{padding-left:12px;padding-right:12px}
-  .tblock,.changes,.sec{border-radius:12px}
+  .tblock,.sec{border-radius:12px}
   .tb-meta{grid-template-columns:1fr}
-  .stamp{width:75px;height:75px;top:-10px;right:8px}
-  .stamp .s1{font-size:17px}
+  .mb{grid-template-columns:1fr}
   .sec{padding:20px 15px 22px}
   .sec>h2{grid-template-columns:auto 1fr;font-size:21px;line-height:1.35}
   .section-toggle{grid-column:1/-1;justify-self:start}
-  .defs{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){
   .sidebar,.to-top,.progress-bar{transition:none}
 }
 @media print{
   body{background:#fff}
-  .stamp{mix-blend-mode:normal}
   .sidebar,.sidebar-toggle,.sidebar-overlay,.to-top,.section-toggle{display:none!important}
   .page{margin-left:0}
   .wrap{max-width:none;padding:0}
   .sec{box-shadow:none;break-inside:auto}
   .sec.is-collapsed>:not(h2){display:block}
   .callout{break-inside:avoid}
-  th{position:static}
+  pre{white-space:pre-wrap}
 }
 </style>
 </head>
@@ -310,22 +299,25 @@ footer{margin-top:38px;border-top:2px solid var(--line-strong);padding:18px 4px 
 <aside class="sidebar" id="doc-sidebar" aria-label="文档章节导航">
   <div class="side-brand">
     <!-- FILL:side-brand -->
-    <div class="side-kicker">项目名 · REVIEW DRAFT</div>
-    <div class="side-title">范围 评审稿</div>
-    <div class="side-review">vX.Y · 待评审</div>
+    <div class="side-kicker">项目名 · 〈模块〉 DESIGN</div>
+    <div class="side-title">〈模块〉（一句话别名）开发设计稿</div>
+    <div class="side-review">v〈版本〉 · 开发设计稿</div>
     <!-- /FILL:side-brand -->
   </div>
   <nav class="side-nav">
-    <!-- FILL:side-nav
-      与正文 .sec 章节一一对应（删了哪节这里同步删；side-group 可按需分组或省略）：
-    <div class="side-group">综述</div>
-    <a href="#s1"><span class="n">01</span><span>需求解读</span></a>
-    <a href="#s2"><span class="n">02</span><span>当前有效决策</span></a>
-    <a href="#s3"><span class="n">03</span><span>设计方案</span></a>
-    <div class="side-group">评审重点</div>
-    <a href="#s4"><span class="n">04</span><span>未决问题与评审请求</span></a>
-    <a href="#s5"><span class="n">05</span><span>明确不做</span></a>
-    /FILL:side-nav -->
+    <!-- FILL:side-nav -->
+    <!-- 三组：架构 / 模块 / 里程碑与验证；与正文章节一一对应，删了哪节导航同步删。
+         长章可加二级项：<a class="sub" href="#锚点">小节名</a> -->
+    <div class="side-group">架构</div>
+    <a href="#s1"><span class="n">01</span><span>总览与全局规则</span></a>
+    <a href="#s2"><span class="n">02</span><span>对外接口</span></a>
+    <a href="#s3"><span class="n">03</span><span>核心流程</span></a>
+    <div class="side-group">模块</div>
+    <a href="#s4"><span class="n">04</span><span>模块甲</span></a>
+    <div class="side-group">里程碑与验证</div>
+    <a href="#s8"><span class="n">08</span><span>里程碑切片</span></a>
+    <a href="#s9"><span class="n">09</span><span>验证方案</span></a>
+    <!-- /FILL:side-nav -->
   </nav>
   <div class="side-bottom">
     <div class="side-actions">
@@ -341,85 +333,50 @@ footer{margin-top:38px;border-top:2px solid var(--line-strong);padding:18px 4px 
 <div class="wrap" id="top">
 
 <header class="tblock">
-  <div class="stamp" aria-hidden="true">
-    <!-- FILL:stamp -->
-    <span class="s1">评审稿</span><span class="s2">待评审意见</span><span class="s3">项目·vX.Y</span>
-    <!-- /FILL:stamp -->
-  </div>
   <div class="tb-top">
     <div class="tb-name">
       <!-- FILL:tb-name -->
-      <div class="tb-kicker">项目名 · 需求与方案评审稿</div>
-      <h1>范围 评审稿</h1>
-      <div class="sub">一句话说明本稿覆盖什么、请谁评审</div>
+      <div class="tb-kicker">项目名 · 模块架构设计（面向开发）</div>
+      <h1>〈模块〉（一句话别名）开发设计稿</h1>
+      <div class="sub">一句话说明：给开发者用的设计——整体架构 → 子模块 → 核心流程 → 里程碑切片；核心流程做实，扩展点全部落到接缝。</div>
       <!-- /FILL:tb-name -->
     </div>
     <div class="tb-meta">
       <!-- FILL:tb-meta -->
-      <div><b>范围</b><span>全局｜某模块</span></div>
-      <div><b>版本</b><span class="vtag">vX.Y</span></div>
+      <div><b>范围</b><span>〈模块〉（模块）</span></div>
+      <div><b>版本</b><span class="vtag">v〈版本〉</span></div>
       <div><b>日期</b><span>YYYY-MM-DD</span></div>
-      <div><b>成熟度</b><span>仅访谈｜设计草稿｜SPEC 已定稿</span></div>
-      <div><b>取材</b><span>解读 · ADR ×N · SPEC</span></div>
+      <div><b>状态</b><span>开发设计稿</span></div>
+      <div><b>部署</b><span>一句话部署形态</span></div>
+      <div><b>取材</b><span>SPEC · 附加取材</span></div>
       <!-- /FILL:tb-meta -->
     </div>
   </div>
-  <div class="tb-sign">
-    <!-- FILL:tb-sign
-      评审人会签栏，按实际评审人增减；不需要会签就整块删掉（连同外层 div.tb-sign）：
-    <section><div class="role">需求</div><div class="who">产品负责人</div><div class="line"></div><div class="hint">签字 / 日期</div></section>
-    <section><div class="role">技术</div><div class="who">架构评审人</div><div class="line"></div><div class="hint">签字 / 日期</div></section>
-    <section><div class="role">业务</div><div class="who">业务方代表</div><div class="line"></div><div class="hint">签字 / 日期</div></section>
-    /FILL:tb-sign -->
+  <div class="mb">
+    <!-- FILL:mb -->
+    <!-- 子模块速览卡：一个子模块一张，链到对应模块章；不需要可整块删（连同外层 div.mb） -->
+    <a href="#s4"><b>模块甲</b><span>一句话职责</span></a>
+    <!-- /FILL:mb -->
   </div>
 </header>
 
-<div class="changes">
-  <!-- FILL:changes
-    评审综述（TL;DR）：一段话 + 三张卡（已拍板 stable / 进行中 conditional / 请评审 blocked，没有内容的卡删掉）：
-  <h3>评审综述</h3>
-  <p>这范围要做什么、进展到哪个阶段、本稿请评审什么，3–5 句说完。</p>
-  <div class="review-grid">
-    <div class="review-card stable"><strong>已拍板 · 不在本轮评审范围</strong><p>…</p></div>
-    <div class="review-card conditional"><strong>进行中 · 草稿阶段</strong><p>…</p></div>
-    <div class="review-card blocked"><strong>请评审 · 等你意见</strong><p>…</p></div>
-  </div>
-  /FILL:changes -->
-</div>
-
-<!-- FILL:body
-  正文章节骨架（规则见 skill 的 reference.md §一；空章节整节删除并同步删侧边导航项）：
+<!-- FILL:body -->
+<!-- 章节骨架（十章结构与各章内容规则见 reference.md §一；本注释区照抄结构再填内容）：
 <section class="sec" id="s1">
-  <h2><span class="no">§ 01</span>需求解读</h2>
-  <p class="lede">本节一句话导读。</p>
-  …正文；架构图一律内联 SVG（配色/字体引用模板 CSS 变量保持风格一致；图专属 style/script 可加，
-  但选择器与逻辑必须以本图 id 限定作用域，规范见 skill 的 reference.md §二）：
-  <figure class="flowviz" id="fig-arch"><svg viewBox="0 0 960 540" role="img" aria-label="图题">…</svg><figcaption>图题</figcaption></figure>
+  <h2><span class="no">§ 01</span>总览与全局规则</h2>
+  <p class="lede">一句话导读。</p>
+  <h3 id="s1-arch"><span class="h3no">1.2</span>整体架构</h3>
+  …
 </section>
-<section class="sec" id="s2">
-  <h2><span class="no">§ 02</span>当前有效决策</h2>
-  <div class="prin">
-    <article><div class="pno">D1</div><div class="pbody"><h4>决策标题<span class="src">ADR 0002</span></h4><p>决策一句话。</p></div></article>
-  </div>
-</section>
-<section class="sec" id="s3">
-  <h2><span class="no">§ 03</span>设计方案 <span class="b b-r">设计草稿</span></h2>
-  …（成熟度徽标：<span class="b b-k">SPEC 已定稿</span> / <span class="b b-r">设计草稿</span> / <span class="b b-g">仅访谈</span>）
-</section>
-<section class="sec" id="s4">
-  <h2><span class="no">§ 04</span>未决问题与评审请求</h2>
-  <div class="callout amber"><b>请评审 · Q1</b>问题描述，以及请评审人回答什么。</div>
-</section>
-<section class="sec" id="s5">
-  <h2><span class="no">§ 05</span>明确不做</h2>
-  <ul class="plain"><li>…</li></ul>
-</section>
-/FILL:body -->
+架构图 / 时序图 / 状态机画法一律照 diagram.md 范式；
+时序图 svg 挂 class="seqv"、状态机挂 class="stm"（共享样式模板已内置，图内只需 defs 里的 marker）。
+-->
+<!-- /FILL:body -->
 
 <footer>
   <!-- FILL:footer -->
-  <span>项目名 · 范围 评审稿 vX.Y</span>
-  <span>由 spec-review-doc 汇总仓库产物生成 · 评审意见请反馈项目负责人</span>
+  <span>项目名 · 〈模块〉（一句话别名）开发设计稿 v〈版本〉 · YYYY-MM-DD</span>
+  <span>依据 SPEC（specs/〈模块〉.md）与登记的附加取材生成 · 源文档更新后需同步修订</span>
   <!-- /FILL:footer -->
 </footer>
 
@@ -432,7 +389,7 @@ footer{margin-top:38px;border-top:2px solid var(--line-strong);padding:18px 4px 
   const body = document.body;
   const sidebarToggle = document.querySelector('.sidebar-toggle');
   const sidebarOverlay = document.querySelector('.sidebar-overlay');
-  const navLinks = [...document.querySelectorAll('.side-nav a')];
+  const navLinks = [...document.querySelectorAll('.side-nav a')].filter(a => !a.classList.contains('sub'));
   const sections = [...document.querySelectorAll('.sec')];
   const progressBar = document.querySelector('.progress-bar');
   const progressValue = document.querySelector('.progress-value');
@@ -447,7 +404,7 @@ footer{margin-top:38px;border-top:2px solid var(--line-strong);padding:18px 4px 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') setNavOpen(false);
   });
-  navLinks.forEach((link) => {
+  document.querySelectorAll('.side-nav a').forEach((link) => {
     link.addEventListener('click', () => {
       if (window.innerWidth <= 900) setNavOpen(false);
     });

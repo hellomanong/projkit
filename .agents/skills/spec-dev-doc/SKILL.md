@@ -1,6 +1,6 @@
 ---
 name: spec-dev-doc
-description: 评审面生成：把某模块已定稿的 SPEC 投影成一份自包含 HTML 评审面（docs/review/，版本化快照）——取「这章讲什么 / 图 / 为什么这么定 / 要你拍的 / 缺口」五栏，架构图与流程图必带，只有字段级实现细节留在 SPEC 不进稿。读者是要拍板的人：判断决定对不对、设计够不够开工、能不能给人讲明白。仅限用户显式调用（Claude Code 中 /spec-dev-doc <模块名>，Codex 中 $spec-dev-doc），不要自动触发。
+description: 评审面生成：把某模块已定稿的 SPEC 投影成一份自包含 HTML 评审面（docs/review/，版本化快照）——取「这章讲什么 / 图 / 为什么这么定 / 要你拍的 / 缺口」五栏，图与前四栏一同投影，只有字段级实现细节留在 SPEC 不进稿；一句话说不出「这张图让读者看懂什么」就不画，缺图记进缺口栏。读者是要拍板的人：判断决定对不对、设计够不够开工、能不能给人讲明白。仅限用户显式调用（Claude Code 中 /spec-dev-doc <模块名>，Codex 中 $spec-dev-doc），不要自动触发。
 argument-hint: <模块名> [版本号]
 disable-model-invocation: true
 ---

@@ -10,7 +10,7 @@ Claude Code 标准工程实践资料库 + 新项目脚手架。**本仓库根目
 - `docs/PROJECT-GUIDE.md`：标准目录结构说明，也是脚手架分发给每个新项目的文件
 - `.agents/skills/project-bootstrap/`：新项目初始化 skill，用法 `/project-bootstrap <目标目录>`（Codex 中 `$project-bootstrap`）；对已初始化项目重跑 = 刷新方法论文件；只在 projkit 里用，不随样板分发
 - `.agents/skills/spec-{interview,design,issues}/`：需求访谈（产出 `docs/adr/` 追加式决策）→ 方案设计与 SPEC 定稿（`specs/` + ARCHITECTURE.md）→ issue 拆分（GitHub 对账）三环流水线——产物文件衔接、各自草稿断点可续、哪环有问题单独修哪环，**随样板分发到每个新项目**；bootstrap 第 4/5 步按序委托它们
-- `.agents/skills/spec-dev-doc/`：开发设计稿生成——把某模块产物汇总成面向开发者的自包含 HTML 架构设计稿（`docs/review/`，版本化快照），图优先、子模块成章、扩展点落接缝，照着能开工；三环旁路、仅显式调用，同样随样板分发
+- `.agents/skills/spec-dev-doc/`：评审面生成——把已定稿的 SPEC 投影成自包含 HTML（`docs/review/`，版本化快照）。**SPEC 是模块内容的唯一源**，正文按章组织、每章装六栏（这章讲什么 / 图 / 为什么这么定 / 要你拍的 / 缺口 / 怎么做），评审面取前五栏（含图），字段级实现细节留在 SPEC 不进稿；章节镜像 SPEC 的章、无固定章节清单、文字 ≤6 屏（图不计）；三环旁路、仅显式调用，同样随样板分发
 - 全部 skill 的真身都在 `.agents/skills/`，`.claude/skills/`、`.codex/skills/` 里是软链——Claude Code 和 Codex 都能调用
 
 ## 约定

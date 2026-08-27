@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# render-mermaid.sh —— 把一份 mermaid 图源预渲染成自包含 SVG，供开发设计稿（离线 HTML）贴图。
+# render-mermaid.sh —— 把一份 mermaid 图源预渲染成自包含 SVG，供设计文档（离线 HTML）贴图。
 #
 # 用法：render-mermaid.sh <图源.mmd> <输出.svg> [--id <svg-id>] [--png <截图.png>]
 #   --id   SVG 根元素的 id，默认取输出文件名主干；同一页里多张图的 id 不得重复
@@ -78,10 +78,14 @@ HEAD
 <script>
 mermaid.initialize({
   startOnLoad:false, theme:'base', htmlLabels:false,
-  sequence:{mirrorActors:false, useMaxWidth:false, wrap:true},
+  fontSize:11,
+  sequence:{mirrorActors:false, useMaxWidth:false, wrap:true,
+            width:105, actorMargin:30, messageMargin:26,
+            boxMargin:8, boxTextMargin:3, noteMargin:8,
+            diagramMarginX:20, diagramMarginY:10},
   state:{useMaxWidth:false},
   themeVariables:{
-    fontFamily:'-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif', fontSize:'13px',
+    fontFamily:'-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif', fontSize:'11px',
     primaryColor:'#fcfdfd', primaryBorderColor:'#1a2420', primaryTextColor:'#1a2420',
     lineColor:'#54645d', tertiaryColor:'#eef4f1',
     actorBkg:'#e4efea', actorBorder:'#1e5c4f', actorTextColor:'#1a2420', actorLineColor:'#ccd6d1',

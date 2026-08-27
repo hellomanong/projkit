@@ -171,6 +171,11 @@ details.flowstep>.dbody{margin-top:-1px;border-radius:0 0 6px 6px}
 .dgm .bx{flex:1 1 150px;min-width:130px;padding:9px 12px;border:1.2px solid var(--ink);border-radius:6px;background:var(--card)}
 .dgm .bx b{display:block;font:600 12.5px/1.5 var(--sans);color:var(--ink)}
 .dgm .bx span{display:block;font:11px/1.5 var(--sans);color:var(--ink2)}
+.dgm .bx.fit{flex:0 1 auto;width:auto;min-width:110px;max-width:210px}
+.dgm .bx .no{display:inline-grid;place-items:center;width:16px;height:16px;margin-right:5px;border-radius:50%;background:var(--pine);color:#fcfdfd;font:600 9.5px/1 var(--mono);font-style:normal;vertical-align:1.5px}
+.dgm .bx.ext .no{background:var(--blue)}
+.dgm .bx.warn .no{background:var(--amber)}
+.dgm .down>span .no,.dgm .up>span .no{width:15px;height:15px;font-size:9px;margin-right:4px}
 .dgm .bx.new{border-color:var(--pine);background:var(--pine-soft)}
 .dgm .bx.ext{border-color:var(--blue);background:var(--blue-soft)}
 .dgm .bx.warn{border-color:var(--amber);background:var(--amber-soft)}
@@ -188,13 +193,13 @@ details.flowstep>.dbody{margin-top:-1px;border-radius:0 0 6px 6px}
 .dgm .conn path{stroke:var(--ink2);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .dgm .conn .l{stroke:var(--ink2)}
 .dgm .conn.async .l{stroke-dasharray:4 3}
-.dgm .down{display:flex;align-items:center;gap:10px;margin:6px 0 4px}
-.dgm .down>svg{flex:0 0 24px;height:30px}
-.dgm .down path{stroke:var(--ink2);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.dgm .down.async .l{stroke-dasharray:4 3}
-.dgm .down>span{padding:3px 12px;background:var(--card);border:1px solid var(--line);border-radius:99px;
+.dgm .down,.dgm .up{display:flex;align-items:center;gap:10px;margin:6px 0 4px}
+.dgm .down>svg,.dgm .up>svg{flex:0 0 24px;height:30px}
+.dgm .down path,.dgm .up path{stroke:var(--ink2);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.dgm .down.async .l,.dgm .up.async .l{stroke-dasharray:4 3}
+.dgm .down>span,.dgm .up>span{padding:3px 12px;background:var(--card);border:1px solid var(--line);border-radius:99px;
   font-size:11.5px;color:var(--ink);line-height:1.6}
-.dgm .down.async>span{border-color:var(--amber);background:var(--amber-soft);color:#5c4310}
+.dgm .down.async>span,.dgm .up.async>span{border-color:var(--amber);background:var(--amber-soft);color:#5c4310}
 @media(max-width:820px){.dgm .bx{flex:1 1 100%}}
 
 /* 图容器：mermaid 预渲染 SVG 与图下说明（diagram.md §二 依赖，勿删） */
@@ -204,6 +209,16 @@ details.flowstep>.dbody{margin-top:-1px;border-radius:0 0 6px 6px}
 .flowviz svg text{font-family:inherit}
 .flowviz .cap{margin:8px 0 0;text-align:left;font-size:12px;line-height:1.7;letter-spacing:0}
 
+/* 图例条：线型含义（diagram.md §三点三 依赖，勿删） */
+.fig-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:11.5px;color:var(--ink2)}
+.fig-legend i{display:inline-block;width:22px;height:0;border-top:2px solid var(--ink2);margin-right:5px;vertical-align:3px}
+.fig-legend i.d{border-top-style:dashed}
+.fig-legend i.b{width:13px;height:11px;border:1.2px solid var(--ink);border-radius:3px;background:var(--card);vertical-align:-1px}
+.fig-legend i.b.new{border-color:var(--pine);background:var(--pine-soft)}
+.fig-legend i.b.ext{border-color:var(--blue);background:var(--blue-soft)}
+.fig-legend i.b.warn{border-color:var(--amber);background:var(--amber-soft)}
+.fig-legend i.n{width:14px;height:14px;border:0;border-radius:50%;background:var(--pine);vertical-align:-2px}
+
 
 </style></head><body><a class="skip" href="#content">跳到正文</a>
 
@@ -212,16 +227,27 @@ details.flowstep>.dbody{margin-top:-1px;border-radius:0 0 6px 6px}
   <p class="kicker">文档编号</p>
   <p class="title">模块名：一句话定位</p>
   <span class="vtag">v0.1 · 当前有效</span>
-  <p class="bmeta">2026-01-01 · 评审面</p>
+  <p class="bmeta">2026-01-01 · 设计文档</p>
 -->
 <!-- /FILL:side-brand -->
 </div>
 <div class="toc">
 <!-- FILL:side-nav
-  分组名沿用 SPEC 主题的自然归组，没有固定组名；一章一个 <a>，长章可加 .sub 二级项。
-  <div class="group">分组名</div>
-  <a href="#ch-01"><span class="n">01</span><span>主题名</span></a>
-  <div class="subs"><a class="sub" href="#ch-01-s1"><span class="sn">1.1</span><span>小节名</span></a></div>
+  首组固定「整体设计」、末组固定「收口」；中间分组名沿用 SPEC 章的自然归组。
+  一章一个 <a>；整体设计的两张全局图与例子挂 .sub 二级项。
+
+  <div class="group">整体设计</div>
+  <a href="#ch-00"><span class="n">00</span><span>整体设计</span></a>
+  <div class="subs">
+    <a class="sub" href="#ch-00-s1"><span class="sn">0.1</span><span>全模块结构</span></a>
+    <a class="sub" href="#ch-00-s2"><span class="sn">0.2</span><span>一次发布的十二步</span></a>
+    <a class="sub" href="#ch-00-s3"><span class="sn">0.3</span><span>一个走通的例子</span></a></div>
+
+  <div class="group">分组名（沿用 SPEC 归组）</div>
+  <a href="#ch-01"><span class="n">01</span><span>章名</span></a>
+
+  <div class="group">收口</div>
+  <a href="#ch-99"><span class="n">99</span><span>未决登记</span></a>
 -->
 <!-- /FILL:side-nav -->
 </div>
@@ -229,51 +255,107 @@ details.flowstep>.dbody{margin-top:-1px;border-radius:0 0 6px 6px}
 
 <main id="content">
 <!-- FILL:body
-  ============ 全篇固定三件（顺序不可换）============
-  1) 顶部 sheet：一分钟看懂 + 仪表盘 + 一个端到端例子
-  2) 主题 sheet × N：镜像 SPEC 主题，每章取四栏
-  3) 末尾 sheet：未决登记
+  ============ 全篇骨架（头尾固定，中间镜像 SPEC）============
+  1) ch-00「整体设计」：导读 + 正常路径几段 + 仪表盘 + 整体架构图 + 整体流程图 + 端到端例子
+  2) 主题 sheet × N：镜像 SPEC 的章，每章取五栏（含图），「怎么做」栏不取
+  3) ch-99「未决登记」：固定三列表
 
-  ---- 顶部 sheet 骨架 ----
+  ============ ch-00 整体设计 ============
+  章名就叫「整体设计」，不叫「总览」「概述」「一分钟看懂」。
+
   <section class="sheet" id="ch-00">
-    <div class="head"><span class="no">00</span><h1>一分钟看懂</h1>
-      <div class="headtools"><span class="kind">评审面</span>
+    <div class="head"><span class="no">00</span><h1>整体设计</h1>
+      <div class="headtools"><span class="kind">设计文档</span>
         <div class="foldctl"><span>冗长枚举表</span>
           <button id="fexp" type="button">展开全部</button>
           <button id="fcol" type="button">收起全部</button></div></div></div>
     <div class="lede"><div><p>一句白话说清这模块干什么，零黑话。</p>
-      <p>第一次读先看本章那个例子；要拍板的集中在下面各章「要你拍的」。</p></div></div>
+      <p>先看下面两张图各走一遍，再顺着各章的图和「为什么这么定」看；要动代码时才去读 SPEC 的「怎么做」栏。</p></div></div>
+
+    <p>把它想成一套「先登记、后投递、可核对」的机制。正常路径只有四段：</p>
+    <ol class="flowsteps">
+      <li><strong>第一段名</strong>：一句话说清这一段干什么。</li>
+      <li><strong>第二段名</strong>：一句话。（三到五段封顶）</li>
+    </ol>
 
     <div class="stats">
-      <div class="stat"><b>N</b><span>规模计数</span></div>
-      <div class="stat"><b>N</b><span>当前未拍板</span></div>
-      <div class="stat"><b>N</b><span>已知缺口</span></div>
+      <div class="stat"><b>N</b><span>章</span></div>
+      <div class="stat"><b>N</b><span>章内待你拍板</span></div>
+      <div class="stat"><b>N</b><span>未决登记（99 章）</span></div>
+      <div class="stat"><b>N</b><span>各章已知缺口</span></div>
     </div>
-    <p class="cap">仪表盘只统计已知缺口——标出来的洞能数，没人想到的洞数不出来。</p>
+    <p class="cap">仪表盘<strong>只统计已知缺口</strong>——标出来的洞能数，没人想到的洞数不出来。设计完不完备，看下面那个例子能不能从头走通。</p>
 
-    <h2 id="ch-00-s1"><span class="h2no">0.1</span>一个端到端例子</h2>
-    <p>全文唯一一个，带一次故障、从头走到尾。例子走不通就是设计有洞。</p>
+    小节标题写实质内容，不写「架构图」「流程图」。
+    <h2 id="ch-00-s1"><span class="h2no">0.1</span>全模块结构</h2>
+    <div class="dgm">
+      整体架构图：由哪几块组成、谁连谁、哪些本期新建、哪些是外部依赖。画法见 diagram.md §一。
+      节点副标题开头标上全流程第几步（① / ②③ / ⑧⑨）。
+      <p class="note"><strong>绿框</strong> = 本期新建；<strong>白框</strong> = 已有；<strong>蓝框</strong> = 外部依赖；<strong>黄框</strong> = 异常或需人介入。<br/><strong>实线</strong> = 正常路径，<strong>虚线</strong> = 异步回程。<br/>图 1　这张图要让人记住的那一条结论。</p>
+    </div>
+
+    <h2 id="ch-00-s2"><span class="h2no">0.2</span>一次发布的十二步</h2>
+    <figure class="flowviz" id="fig-flow">
+      粘贴 render-mermaid.sh 预渲染出的 SVG 全文。全流程编号在这里定义（autonumber），各章沿用。
+      <div class="fig-legend"><span><i></i>同步 / 热路径</span><span><i class="d"></i>返回、回执与补发回程</span></div>
+      <figcaption>图 2　一句话主旨：①–③ 这一段干什么，④–⑦ 这一段，⑧–⑫ 这一段。</figcaption>
+      <p class="cap">时限：…（P99 口径写明含什么不含什么）。<br>失败时：判断不了就拒；谁负责最终保障。</p>
+      <script type="text/plain" class="mmd-src">（图源原文，供下次修改）</script>
+    </figure>
+
+    <h2 id="ch-00-s3"><span class="h2no">0.3</span>一个走通的例子（带一次故障）</h2>
+    <p>全文唯一一个。照着上面的时序走一遍，中间出一次故障：</p>
+    <ol class="flowsteps">
+      <li>第一步干什么。</li>
+      <li><strong>故障来了</strong>：出了什么事，系统怎么接住。</li>
+    </ol>
+    <div class="callout faq"><p>这个例子走不通的地方就是设计缺口。<strong>目前它能从头走到尾。</strong>「够不够开工」主要看这一条，不是看上面的计数。</p></div>
   </section>
 
-  ---- 主题 sheet 骨架（每章四栏，一栏不省）----
+  ============ 主题 sheet（镜像 SPEC 的章，每章五栏）============
   <section class="sheet" id="ch-01">
-    <div class="head"><span class="no">01</span><h1>主题名</h1><span class="kind">评审面</span></div>
-    <div class="lede"><p>这段讲什么：1 句，零黑话。</p></div>
+    <div class="head"><span class="no">01</span><h1>章名</h1><span class="kind">设计文档</span></div>
+    <div class="lede"><p>这章讲什么：1 句，零黑话。</p></div>
+
+    图紧跟导读句，不给它单起一个叫「图」的小节；节点上标出本章承担全流程第几步。
+    <div class="dgm">
+      <div class="lane"><h4>层小标题写成判断句：正常路径 / 可恢复 / 需要人介入</h4>…</div>
+      <div class="down"><span>岔路一：什么条件下走这条</span></div>
+      <p class="note">图例一行 + 线型一行 + 图 N　这张图的那一条结论。</p>
+    </div>
 
     <h2 id="ch-01-s1"><span class="h2no">1.1</span>为什么这么定</h2>
-    <p>≤3 句：取舍 + 被否备选 + 用户视角的理由。确无取舍就写「照契约，无取舍」。</p>
+    <p>单条 ≤3 句：取舍 + 被否备选 + 用户视角的理由。确无取舍就写「照契约，无取舍」。</p>
+    两条以上改用列表，每条以粗体一句结论开头：
+    <ul><li><strong>必须有回执</strong>。消息被接收只能证明通知发出去了，证明不了某个实例真装上了。</li></ul>
 
     <h2 id="ch-01-s2"><span class="h2no">1.2</span>要你拍的</h2>
-    <div class="callout"><p><span class="b b-later">待拍</span>事项 —— 当前按什么倾向实现、扩展点留在哪、等谁拍板。</p></div>
-    （0 条就写：无。）
+    <div class="callout"><p><span class="b b-later">待拍</span>当前按什么倾向实现、扩展点留在哪、等谁拍板。</p></div>
+    （SPEC 里没有这一栏就整栏不写，不留「无」占位。）
 
     <h2 id="ch-01-s3"><span class="h2no">1.3</span>缺口</h2>
-    <p><span class="b b-g">待补</span>／<span class="b b-g">装配时定</span>／<span class="b b-g">SPEC 中未见</span></p>
-    <p class="cap">细节见 SPEC《主题名》。</p>
+    <p><span class="b b-g">待补</span>一句话说清 SPEC 自己标出来的这个洞是什么。</p>
+    <p><span class="b b-g">装配时定</span>另一条。三档徽标（待补 / 装配时定 / 产物中未见）与 SPEC 缺口栏一一对应。
+    缺口栏不要套 .callout —— .callout.warn 会渲染出「易错边界」标签，跟缺口不是一回事。</p>
+    （SPEC 里没有这一栏就整栏不写。）
+    <p class="cap">接口、字段、失败分支见 SPEC《章名》的「怎么做」栏。</p>
   </section>
 
-  ⚠ 「怎么做」栏（接口、字段、时序、失败分支、验证项）一个字都不取——不是折起来，是不出现。
-  ⚠ 全文 ≤6 屏。超了必然是实现细节漏进来了，回去删，不要加折叠。
+  ============ ch-99 未决登记（固定三列）============
+  <section class="sheet" id="ch-99">
+    <div class="head"><span class="no">99</span><h1>未决登记</h1><span class="kind">设计文档</span></div>
+    <div class="lede"><p>全部未拍板事项。每条写「当前按什么倾向实现、等什么拍板」，不写「请评审人回答什么」。<strong>实现时不得顺手做掉。</strong></p></div>
+    <div class="table"><table>
+      <thead><tr><th>事项</th><th>已留扩展点</th><th>归属 / 触发</th></tr></thead>
+      <tbody><tr><td>一句话说清没定的是什么</td><td>当前倾向 + 接缝在哪；确实没有写「—」</td><td>卡住谁、什么条件下必须解决</td></tr></tbody>
+    </table></div>
+    <p class="cap">分期范围与验证方案见 SPEC「…」章。</p>
+  </section>
+
+  ⚠ 「怎么做」栏（接口、字段、失败分支、验证项）一个字都不取——不是折起来，是不出现。
+  ⚠ 不交代取材过程：稿里不出现「SPEC 中未见」「SPEC 没画」「本章没有图」这类话。没有图就直接进下一栏。
+  ⚠ 图必须有图号、图注、图例（diagram.md §三）；全篇共用整体流程图那一套编号。
+  ⚠ 全文 ≤6 屏（图不计）。超了必然是实现细节漏进来了，回去删，不要加折叠。
   ⚠ 折叠 <details class="deep"> 只用于确实冗长的枚举表；里面不许藏「为什么」和例子。
 -->
 <!-- /FILL:body -->

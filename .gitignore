@@ -8,3 +8,6 @@
 CLAUDE.local.md
 .claude/settings.local.json
 .claude/agent-memory-local/
+
+# Python 缓存（gen_arch.py 生成）
+__pycache__/

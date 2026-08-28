@@ -32,6 +32,7 @@
 **图**
 
 ```mermaid
+%%{init: {"fontSize": 12, "themeVariables": {"fontSize": "12px"}, "flowchart": {"nodeSpacing": 20, "rankSpacing": 28, "padding": 6}, "sequence": {"width": 110, "height": 36, "boxMargin": 6, "messageMargin": 24, "noteMargin": 6, "actorMargin": 40, "mirrorActors": false}}}%%
 graph LR
     ERP[上游 ERP] -->|状态回调| WH[erp/webhook 改造]
     WH -->|内部事件| DP[notify/dispatcher 新建*]

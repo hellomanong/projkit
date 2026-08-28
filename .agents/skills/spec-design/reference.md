@@ -65,10 +65,15 @@
 
 「规划中」的门槛：PRD **白纸黑字承诺要做**、只是本轮不做的才画；「要不要做」本身还没定的**不画**——把 PRD 没定的事画成图上的既定事实，等于替 PRD 编需求（红线）。宁缺勿滥。
 
-### 架构图硬要求（两条）
+### 架构图硬要求（三条）
 
 1. **数据流向箭头必须带方向**（所有图）；**模块图还必须标出新建 vs 改造**——用不同标记（如名字后缀 `*` 表新建，图内或图下给图例）；全局图不用 `*`，用虚线/实线区分规划中/已定稿。
 2. **节点控制在十来个**。图是给认领 issue 的开发者三十秒建立直觉用的，不是设计文档本身；画不下说明该拆模块或该收粒度。
+3. **每张图开头固定一行紧凑指令**，压掉 Mermaid 默认的 16px 字号和大间距（实测同一张八步流程图：默认占一屏半，紧凑后半屏）。原样照抄、不改别的主题项，图种用不到的键会被忽略，flowchart / sequenceDiagram / stateDiagram 通用：
+
+   ```
+   %%{init: {"fontSize": 12, "themeVariables": {"fontSize": "12px"}, "flowchart": {"nodeSpacing": 20, "rankSpacing": 28, "padding": 6}, "sequence": {"width": 110, "height": 36, "boxMargin": 6, "messageMargin": 24, "noteMargin": 6, "actorMargin": 40, "mirrorActors": false}}}%%
+   ```
 
 格式一律用 Mermaid 写在 md 里（```mermaid 代码块）：进 git、可 diff、GitHub 直接渲染、任何工具都能改。截图和画板链接都做不到这四条，不要用。
 

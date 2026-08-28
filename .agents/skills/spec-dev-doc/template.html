@@ -49,7 +49,6 @@ main{margin-left:var(--nav);width:calc(100% - var(--nav));padding:46px 36px 140p
 .no{color:var(--pine);font:500 46px/.85 var(--song);letter-spacing:-.02em}
 .head h1{margin:0;font:700 27px/1.35 var(--song);letter-spacing:.03em;text-wrap:balance}
 .kind{align-self:center;padding:3px 12px;border:1px solid var(--pine);border-radius:99px;color:var(--pine);font:600 10px/1.7 var(--sans);letter-spacing:.16em;white-space:nowrap}
-.headtools{display:flex;align-items:center;justify-content:flex-end;gap:12px;align-self:center;white-space:nowrap}
 .lede{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;margin:0 0 26px;padding:13px 18px;border-left:4px solid #c8a24a;border-radius:0 4px 4px 0;background:var(--pine-faint)}
 .lede::before{content:"导读";color:var(--amber);font:700 11px/2 var(--sans);letter-spacing:.3em;white-space:nowrap}
 .lede p{margin:0;max-width:none;font-size:16px;line-height:1.9}
@@ -88,27 +87,15 @@ pre code{border:0;background:none;color:inherit}
 .stat i{margin-left:6px;font-style:normal;color:var(--amber);font-size:10px}
 @media (max-width:1180px){nav{display:none}main{margin:0;width:100%;padding:18px 14px 90px}
 .sheet{padding:26px 20px 30px}
-.head{grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center}.head .kind{display:none}.headtools{grid-column:auto;justify-content:flex-end}.no{font-size:34px}}
-@media (max-width:560px){.head{gap:8px}.head h1{font-size:21px}.no{font-size:30px}.foldctl span{display:none}.foldctl button{padding:3px 7px;font-size:9.5px}}
+.head{grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center}.head .kind{display:none}.no{font-size:34px}}
+@media (max-width:560px){.head{gap:8px}.head h1{font-size:21px}.no{font-size:30px}}
 @media print{@page{size:A4;margin:16mm}nav{display:none}main{margin:0;width:auto;padding:0}
 .sheet{break-before:page;margin:0;padding:0 0 24px;border:0;box-shadow:none}.sheet::after{display:none}
 .sheet:first-child{break-before:auto}table{min-width:0;font-size:9.5px}h2,h3{break-after:avoid}
 .flowviz,table,pre,.callout,.stat{break-inside:avoid}}
-@media print{.foldctl{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
-details.deep{margin:8px 0 16px}
-details.deep>summary{cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:3px 12px;border:1px solid var(--pine);border-radius:99px;color:var(--pine);background:var(--pine-faint);font:600 11px/1.7 var(--sans);letter-spacing:.04em;user-select:none;list-style:none}
-details.deep>summary::-webkit-details-marker{display:none}
-details.deep>summary::before{content:"\25B8  ";font-size:10px}
-details.deep[open]>summary::before{content:"\25BE  "}
-details.deep[open]>summary{border-radius:10px 10px 0 0;background:var(--pine-soft)}
-details.deep>.dbody{margin-top:-1px;padding:6px 18px 10px;border:1px solid var(--line);border-radius:0 10px 10px 10px;background:var(--card)}
 .flowsteps{display:grid;gap:8px;margin:18px 0 28px}
-.foldctl{display:inline-flex;align-items:center;gap:5px;margin:0}
-.foldctl span{margin-right:2px;color:var(--ink2);font:600 10px/1.6 var(--sans);letter-spacing:.08em}
-.foldctl button{flex:none;padding:4px 10px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink2);font:600 10.5px/1.6 var(--sans);cursor:pointer}
-.foldctl button:hover{color:var(--pine);border-color:var(--pine)}
 
 /* 四色语义徽标（项目规范：结论性内容一眼分轻重；只此一套，不另造颜色措辞） */
 .b{display:inline-block;margin-right:6px;padding:1px 8px;border-radius:99px;
@@ -120,15 +107,11 @@ details.deep>.dbody{margin-top:-1px;padding:6px 18px 10px;border:1px solid var(-
 .b-g{background:#eef0ef;color:var(--ink2)}
 
 
-
-
-/* 图容器：diagram-design 导出的 SVG 与图下说明（勿删）。全篇只有这一种图容器。 */
-.flowviz{margin:18px 0 26px;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:18px 20px 14px;overflow-x:auto;box-shadow:0 4px 18px rgba(28,55,45,.045)}
+/* 图容器：只管留白与横向滚动，不给 diagram-design 的 SVG 加边框、底色或字体（勿删）。全篇只有这一种图容器。 */
+.flowviz{margin:18px 0 26px;overflow-x:auto}
 .flowviz svg{display:block;max-width:100%;height:auto;margin:0 auto}
 .flowviz figcaption{font-size:12.5px;color:var(--ink2);margin-top:10px}
-.flowviz svg text{font-family:inherit}
 .flowviz .cap{margin:8px 0 0;text-align:left;font-size:12px;line-height:1.7;letter-spacing:0}
-
 
 
 </style></head><body><a class="skip" href="#content">跳到正文</a>
@@ -151,7 +134,7 @@ details.deep>.dbody{margin-top:-1px;padding:6px 18px 10px;border:1px solid var(-
   <a href="#ch-00"><span class="n">00</span><span>整体设计</span></a>
   <div class="subs">
     <a class="sub" href="#ch-00-s1"><span class="sn">0.1</span><span>全模块结构</span></a>
-    <a class="sub" href="#ch-00-s2"><span class="sn">0.2</span><span>一次发布的十二步</span></a>
+    <a class="sub" href="#ch-00-s2"><span class="sn">0.2</span><span>一次发布怎么走完</span></a>
     <a class="sub" href="#ch-00-s3"><span class="sn">0.3</span><span>一个走通的例子</span></a></div>
 
   <div class="group">分组名（沿用 SPEC 归组）</div>
@@ -167,7 +150,7 @@ details.deep>.dbody{margin-top:-1px;padding:6px 18px 10px;border:1px solid var(-
 <main id="content">
 <!-- FILL:body
   ============ 全篇骨架（头尾固定，中间镜像 SPEC）============
-  1) ch-00「整体设计」：导读 + 正常路径几段 + 仪表盘 + 整体架构图 + 整体流程图 + 端到端例子
+  1) ch-00「整体设计」：导读 + 正常路径几段 + 仪表盘 + 0.1 全模块结构 + 0.2 一件事怎么走完 + 端到端例子
   2) 主题 sheet × N：镜像 SPEC 的章，每章取五栏（含图），「怎么做」栏不取
   3) ch-99「未决登记」：固定三列表
 
@@ -175,15 +158,11 @@ details.deep>.dbody{margin-top:-1px;padding:6px 18px 10px;border:1px solid var(-
   章名就叫「整体设计」，不叫「总览」「概述」「一分钟看懂」。
 
   <section class="sheet" id="ch-00">
-    <div class="head"><span class="no">00</span><h1>整体设计</h1>
-      <div class="headtools"><span class="kind">设计文档</span>
-        <div class="foldctl"><span>冗长枚举表</span>
-          <button id="fexp" type="button">展开全部</button>
-          <button id="fcol" type="button">收起全部</button></div></div></div>
+    <div class="head"><span class="no">00</span><h1>整体设计</h1><span class="kind">设计文档</span></div>
     <div class="lede"><div><p>一句白话说清这模块干什么，零黑话。</p>
       <p>先看下面两张图各走一遍，再顺着各章的图和「为什么这么定」看；要动代码时才去读 SPEC 的「怎么做」栏。</p></div></div>
 
-    <p>把它想成一套「先登记、后投递、可核对」的机制。正常路径只有四段：</p>
+    <p>一句话给正常路径定个调，然后分段过一遍：</p>
     <ol class="flowsteps">
       <li><strong>第一段名</strong>：一句话说清这一段干什么。</li>
       <li><strong>第二段名</strong>：一句话。（三到五段封顶）</li>
@@ -199,18 +178,17 @@ details.deep>.dbody{margin-top:-1px;padding:6px 18px 10px;border:1px solid var(-
 
     小节标题写实质内容，不写「架构图」「流程图」。
     <h2 id="ch-00-s1"><span class="h2no">0.1</span>全模块结构</h2>
-    整体架构图：由哪些部件组成、外面有谁、跟外面怎么来往。交给 diagram-design 画（architecture 类），
-    导出 SVG 贴在这里；不标步骤编号，部件名与 0.2 时序图的参与者一字不差。图例 diagram-design 自己画在 SVG 底部。
-    <figure class="flowviz" id="fig-arch">
-      （diagram-design 导出的 SVG 全文）
-      <figcaption>图 1　一句话主旨：有哪些部件、外面有谁；内部怎么配合看图 2。</figcaption>
-      <p class="cap">时限：…。<br>失败时：…。</p>
+    由哪些部件组成、外面有谁、跟外面怎么来往、哪些本期新建。部件名与 0.2 的参与者一字不差。
+    <figure class="flowviz" id="fig-0-1">
+      （diagram-design 导出的 SVG 全文，已删 @import）
+      <figcaption>图 1　一句话主旨：有哪些部件、外面有谁。</figcaption>
+      <p class="cap">本图只讲结构，一件事怎么走完见图 2。</p>
     </figure>
 
-    <h2 id="ch-00-s2"><span class="h2no">0.2</span>一次发布的十二步</h2>
-    <figure class="flowviz" id="fig-flow">
-      diagram-design 画的 sequence，导出 SVG 贴在这里。全篇步骤编号在这张图上定义，各章沿用。
-      <figcaption>图 2　一句话主旨：①–③ 这一段干什么，④–⑦ 这一段，⑧–⑫ 这一段。</figcaption>
+    <h2 id="ch-00-s2"><span class="h2no">0.2</span>一次发布怎么走完</h2>
+    <figure class="flowviz" id="fig-0-2">
+      （diagram-design 导出的 SVG 全文，已删 @import）
+      <figcaption>图 2　一句话主旨：一件事从头到尾怎么走完，异常分支走哪儿。</figcaption>
       <p class="cap">时限：…（P99 口径写明含什么不含什么）。<br>失败时：判断不了就拒；谁负责最终保障。</p>
     </figure>
 
@@ -228,10 +206,9 @@ details.deep>.dbody{margin-top:-1px;padding:6px 18px 10px;border:1px solid var(-
     <div class="head"><span class="no">01</span><h1>章名</h1><span class="kind">设计文档</span></div>
     <div class="lede"><p>这章讲什么：1 句，零黑话。</p></div>
 
-    图紧跟导读句，不给它单起一个叫「图」的小节。画哪一类交给 diagram-design 选型（一件事怎么走完 → sequence，
-    一个东西有哪几种下场 → state machine，按条件分叉 → flowchart）；消息标签上标出本章承担全流程第几步。
+    图紧跟导读句，不给它单起一个叫「图」的小节。
     <figure class="flowviz" id="fig-ch01">
-      （diagram-design 导出的 SVG 全文）
+      （diagram-design 导出的 SVG 全文，已删 @import）
       <figcaption>图 N　一句话主旨：这张图让读者看懂什么。</figcaption>
       <p class="cap">时限：…。<br>失败时：判断不了就拒；谁负责最终保障。</p>
     </figure>
@@ -266,10 +243,8 @@ details.deep>.dbody{margin-top:-1px;padding:6px 18px 10px;border:1px solid var(-
 
   ⚠ 「怎么做」栏（接口、字段、失败分支、验证项）一个字都不取——不是折起来，是不出现。
   ⚠ 不交代取材过程：稿里不出现「SPEC 中未见」「SPEC 没画」「本章没有图」这类话。没有图就直接进下一栏。
-  ⚠ 图必须有图号与图注（figcaption）、时限与失败语义（cap）；图例由 diagram-design 画进 SVG，作者不写。
-  ⚠ 全篇步骤编号在 0.2 的时序图上定义，各章沿用；整体架构图不标号，靠部件名与参与者同名对应。
-  ⚠ 全文 ≤6 屏（图不计）。超了必然是实现细节漏进来了，回去删，不要加折叠。
-  ⚠ 折叠 <details class="deep"> 只用于确实冗长的枚举表；里面不许藏「为什么」和例子。
+  ⚠ 图必须有图号与图注（figcaption）、时限与失败语义（cap）。
+  ⚠ 全文 ≤6 屏（图不计）。超了必然是实现细节漏进来了，回去删。
 -->
 <!-- /FILL:body -->
 </main>
@@ -284,16 +259,6 @@ sheets.forEach(s=>io.observe(s));
 const subs=[...document.querySelectorAll('nav a.sub')],heads=[...document.querySelectorAll('main h2[id]')];
 const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){subs.forEach(x=>x.classList.remove('on'));document.querySelector(`nav a.sub[href="#${e.target.id}"]`)?.classList.add('on')}}),{rootMargin:'-8% 0px -80%'});
 heads.forEach(h=>io2.observe(h));
-
-const deeps=()=>document.querySelectorAll('details.deep');
-document.getElementById('fexp')?.addEventListener('click',()=>deeps().forEach(d=>d.open=true));
-document.getElementById('fcol')?.addEventListener('click',()=>deeps().forEach(d=>d.open=false));
-function openTo(id){const el=id&&document.getElementById(id);if(!el)return;let p=el.closest('details');while(p){p.open=true;p=p.parentElement&&p.parentElement.closest('details')}}
-addEventListener('hashchange',()=>openTo(decodeURIComponent(location.hash.slice(1))));
-openTo(decodeURIComponent(location.hash.slice(1)));
-let foldSnap=null;
-addEventListener('beforeprint',()=>{foldSnap=[...deeps()].map(d=>d.open);deeps().forEach(d=>d.open=true)});
-addEventListener('afterprint',()=>{if(foldSnap){[...deeps()].forEach((d,i)=>d.open=foldSnap[i]);foldSnap=null}});
 
 
 </script>

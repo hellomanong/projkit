@@ -152,7 +152,7 @@ pre code{border:0;background:none;color:inherit}
   ============ 全篇骨架（固定的只有开篇一章 + 收尾两章，中间镜像 SPEC）============
   1) ch-00「整体设计」：导读 + 正常路径几段 + 仪表盘 + 0.1 全模块结构 + 0.2 一件事怎么走完 + 端到端例子
   2) 主题 sheet × N：镜像 SPEC 的章，SPEC 有几章就有几章、叫什么就叫什么；每章取五栏（含图），「怎么做」栏不取
-  3) ch-98「已决登记」：SPEC「决策登记」的投影（问题 / 选择 / 理由 + 回链）
+  3) ch-98「已决登记」：SPEC「决策登记」的投影（问题 / 选择 / 理由 / 验证 + 回链）
   4) ch-99「未决登记」：SPEC「未拍板清单」的投影（事项 / 已留扩展点 / 归属触发）
 
   ============ ch-00 整体设计 ============
@@ -232,13 +232,13 @@ pre code{border:0;background:none;color:inherit}
     <p class="cap">接口、字段、失败分支见 SPEC《章名》的「怎么做」栏。</p>
   </section>
 
-  ============ ch-98 已决登记（SPEC 决策登记的投影，固定四列）============
+  ============ ch-98 已决登记（SPEC 决策登记的投影，固定五列）============
   <section class="sheet" id="ch-98">
     <div class="head"><span class="no">98</span><h1>已决登记</h1><span class="kind">设计文档</span></div>
     <div class="lede"><p>已经定下的全部决策。扫一遍看有没有你不认可的；每条的完整取舍在它所属那一章，这里不重复。</p></div>
     <div class="table"><table>
-      <thead><tr><th>问题</th><th>选择</th><th>理由</th><th>定在哪</th></tr></thead>
-      <tbody><tr><td>当时在选什么（照 SPEC）</td><td>定了什么（照 SPEC）</td><td>含被否项及否因，≤1 句</td><td><a href="#ch-01-s1">见 1.1</a></td></tr></tbody>
+      <thead><tr><th>问题</th><th>选择</th><th>理由</th><th>验证</th><th>定在哪</th></tr></thead>
+      <tbody><tr><td>当时在选什么（照 SPEC）</td><td>定了什么（照 SPEC）</td><td>含被否项及否因，≤1 句</td><td>已验证：怎么验的 / 未验证：据什么推的（照 SPEC）</td><td><a href="#ch-01-s1">见 1.1</a></td></tr></tbody>
     </table></div>
     逐条照搬 SPEC 的决策登记，不从各章正文自己攒；行内不挂 .b-pin 徽标。
     SPEC 决策登记是空的 = SPEC 没定稿到位，提示回 /spec-design 补，不是删掉这一章。

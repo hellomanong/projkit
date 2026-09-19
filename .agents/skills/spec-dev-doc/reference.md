@@ -82,6 +82,6 @@
 - `template.html` 从本 skill 目录**原样拷贝**，只替换 `<!-- FILL:名字 -->` 与 `<!-- /FILL:名字 -->` 之间的内容区（FILL 区注释里写着示例骨架，照抄结构再填内容）；模板既有 CSS、页面骨架、脚本一个字符不动。FILL 区共四处：`title` / `side-brand` / `side-nav` / `body`。
 - 正文章节一律 `<section class="sheet" id="ch-NN">`，章头 `<div class="head"><span class="no">NN</span><h1>标题</h1><span class="kind">设计文档</span></div>`，导读 `<div class="lede">`；章内小节 `<h2 id="ch-NN-sM"><span class="h2no">N.M</span>标题</h2>`，被侧边栏二级项链到的小节必须有 id。
 - 侧边导航（`FILL:side-nav`）与正文章节一一对应，删了哪节导航同步删；首组「整体设计」（一章）、末组「收口」（98 已决登记 + 99 未决登记两条）固定，中间分组名沿用 SPEC 的自然归组。
-- **图一律 `<figure class="flowviz">`**：里面依次是 diagram-design 导出的 `<svg>`（已删 `@import`）、`<figcaption>`（「图 N　一句话主旨」）、`<p class="cap">`（时序/状态图写 `时限：…` / `失败时：…`；结构图写它与别的图的分工）。`.flowviz` 只管留白与横向滚动，不给图加边框底色，图的外观全由 SVG 自己决定。
+- **图一律 `<figure class="flowviz">`**：里面依次是 diagram-design 导出的 `<svg>`（已删 `@import`）、`<figcaption>`（「图 N　一句话主旨」）、`<p class="cap">`（时序/状态图写 `时限：…` / `失败时：…`，有回调的流程图再逐行列接力参数，行间用 `<br>`；结构图写它与别的图的分工）。`.flowviz` 只管留白与横向滚动，不给图加边框底色，图的外观全由 SVG 自己决定。
 - 组件用法：仪表盘 `<div class="stats">` 内放 `.stat`（`<b>` 数字 + `<span>` 说明）；表格包 `<div class="table">`；编号步骤用 `<ol class="flowsteps">`；图注与指路句用 `.cap`；提示块 `.callout`——不带修饰类用于「要你拍的」，`.warn` 易错边界、`.redline` 红线、`.faq` 背景说明。
 - 徽标：语义徽标 `.b.b-pin`「已拍板」/ `.b.b-must`「必须」/ `.b.b-later`「后置」/ `.b.b-test`「实测」（用法见 §一「重点打标」；`.b-pin` 是行内强调，不是 98 的登记来源）；缺口用 `.b.b-g`（待补 / 装配时定 / 产物中未见）。全文只用这一套。**缺口栏不套 `.callout`**——`.callout.warn` 会渲染出「易错边界」标签，与缺口是两回事；缺口条目直接用 `<p>` 加 `.b-g` 徽标。

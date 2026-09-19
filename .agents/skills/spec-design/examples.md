@@ -34,10 +34,10 @@
 ```mermaid
 %%{init: {"fontSize": 12, "themeVariables": {"fontSize": "12px"}, "flowchart": {"nodeSpacing": 20, "rankSpacing": 28, "padding": 6}, "sequence": {"width": 110, "height": 36, "boxMargin": 6, "messageMargin": 24, "noteMargin": 6, "actorMargin": 40, "mirrorActors": false}}}%%
 graph LR
-    ERP[上游 ERP] -->|状态回调| WH[erp/webhook 改造]
-    WH -->|内部事件| DP[notify/dispatcher 新建*]
-    DP -->|订阅| ST[api/orders/stream 新建*]
-    ST -->|SSE| FE[前端]
+    ERP["上游 ERP<br>订单状态变了就回调"] -->|"回调：订单号、新状态"| WH["回调接收（改造）<br>照旧处理回调；<br>额外发一条状态变更事件"]
+    WH -->|"状态变更事件"| DP["推送分发 *<br>找出这个订单开着的连接，逐条推；<br>连接已断就移出名单，不重试"]
+    DP -->|"新状态"| ST["推送端点 *<br>保持和前端的长连接"]
+    ST -->|"SSE 推送新状态<br>（前端连 GET /orders/:id/stream）"| FE["前端订单页<br>收到就改状态标签"]
 ```
 
 图例：`*` = 本轮新建；无 `*` = 改造或既有模块。
@@ -107,6 +107,8 @@ graph LR
 **「为什么」用用户能判断的话写。** 第一章没写「SSE 比 WebSocket 轻量」就完事，写清了「我们只需要一个方向」——读者据此能判断这个理由站不站得住。技术视角的结论读者判断不了，用户视角的理由才能判断。
 
 **图在决策者一侧，不在「怎么做」里。** 架构图画的是结构与流向，评审的人要靠它看懂设计长什么样——`/spec-dev-doc` 生成设计文档时**必须**把它投影过去。只有画字段与签名的图才算实现细节。
+
+**框写做什么，箭头写交接。** 每个框是「名字 + 做什么」，箭头写传了什么；代码目录（`src/notify/dispatcher.ts`）、事件字段这些实现细节在「怎么做」栏，不进图。端点路径只在前端连进来这个关键交接处保留。一个框里的两件事用分号隔开、分号后换行（`；<br>`）。规则全文见 `docs/PROJECT-GUIDE.md`「画图规范」。
 
 **每条取舍只讲取舍，不限句数。** 事件字段、失败分支这类实现细节挪进「怎么做」。一章有几条独立取舍就写几条，拆成条目一条一行。
 

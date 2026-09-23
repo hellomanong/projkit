@@ -32,7 +32,7 @@ allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/init-skeleton.sh *)
 |---|---|
 | 目录结构 | 照 `<projkit>` 根目录的结构建（不含 claude-code-best-practices.md；`.agents/skills/` 里只拷贝四个 spec-*，不拷贝本 skill 及其软链） |
 | `docs/PROJECT-GUIDE.md` | `<projkit>/docs/PROJECT-GUIDE.md` 原样拷贝 |
-| `.agents/skills/spec-interview/`、`spec-design/`、`spec-issues/`、`spec-dev-doc/` | `<projkit>` 对应四个目录原样拷贝（真身；前三个是每轮需求→设计→拆分的三环，spec-dev-doc 按需把产物汇总成开发设计稿） |
+| `.agents/skills/spec-interview/`、`spec-design/`、`spec-issues/`、`spec-dev-doc/` | `<projkit>` 对应四个目录原样拷贝（真身；前三个是每轮需求→设计→拆分的三环，spec-dev-doc 按需把定稿 SPEC 投影成设计文档） |
 | `.claude/skills/`、`.codex/skills/` 下各四条软链 | 相对软链，各指向 `../../.agents/skills/<对应 skill>`（拷贝后创建，共八条） |
 | `.claude/settings.json` | 本 skill 目录 `templates/settings.json.template` |
 | `.gitignore` | 本 skill 目录 `templates/gitignore.template`（已存在则只追加缺失条目） |
@@ -48,7 +48,11 @@ allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/init-skeleton.sh *)
 
 1. 重跑 `<本 skill 目录>/scripts/init-skeleton.sh <目标目录>`（幂等，只补缺失——projkit 后来新增的标准目录靠这步补齐，否则同步来的 PROJECT-GUIDE.md 会描述一个项目里不存在的目录）。脚本输出（新建了哪些、游离 .md 告警）纳入收尾汇总如实转述。顺手从模板补建缺失的 `docs/prd/README.md`（已存在则不动——登记内容属于项目自己）。
 2. **逐文件同步**（不要「删目录重拷」）四个 `.agents/skills/spec-*/` 目录和 `docs/PROJECT-GUIDE.md` 到 `<projkit>` 最新版：有差异的文件先展示 diff、经用户确认再覆盖；目标目录有而 projkit 没有的文件一律保留（从文件状态无法区分是项目自增还是 projkit 已删除），在收尾汇总里列出、由用户事后决定去留——不当场逐文件阻塞询问。任何一类都不要静默冲掉。
-3. 检查软链（`CLAUDE.md`，加上 `.claude/skills/`、`.codex/skills/` 下每个 spec-* 各一条，共九条）：缺失则补建；已是软链但 `readlink` 目标不对则改正指向（不涉及用户数据，改完在汇总里说明）；位置上已存在**真实文件/目录（不是软链）**时不要直接替换——先展示现状问用户（可能是 Windows 退化拷贝方案或有意为之，见 PROJECT-GUIDE.md「坑」第 7 条），确认走软链才替换——替换前先 diff 拷贝与真身，拷贝里有真身没有的本地改动就先并入真身（或经用户确认放弃），再删拷贝建链。确认保留拷贝形态的：skill 拷贝把第 2 条同步后的最新内容**镜像进去**（退化方案的约定就是改真身后手动同步，刷新时替用户做掉）。`CLAUDE.md` 是真实文件时**不发起「是否切软链」的询问**（那是初始化第 3 步的事），只做内容层面的对齐提示：它的源是**本项目自己的 AGENTS.md**（不是 projkit 的任何文件），而刷新不改 AGENTS.md——两者不一致时提示用户对齐，不要拿「最新版」去灌它。补建软链后顺手删掉该 skills 目录里的 `.gitkeep`（第 1 件事重跑脚本可能在空目录里放了占位）。
+3. 检查软链（`CLAUDE.md`，加上 `.claude/skills/`、`.codex/skills/` 下每个 spec-* 各一条，共九条）：缺了补建，指向不对改正（在汇总里说明）。原则是**软链位置上不是软链的东西属于用户，不静默替换**：
+   - skill 位置上是真实目录：可能是 Windows 退化拷贝方案或有意为之（见 PROJECT-GUIDE.md「坑」第 7 条），先展示现状问用户。要切软链，先把拷贝里真身没有的本地改动并入真身（或经用户确认放弃），再删拷贝建链；保留拷贝形态的，把第 2 件事同步后的内容镜像进去（退化方案的约定就是改真身后手动同步，刷新时替用户做掉）。
+   - `CLAUDE.md` 是真实文件：不问要不要切软链（那是初始化第 3 步的事）。它的源是本项目自己的 AGENTS.md，不是 projkit 的任何文件；两者不一致时只提示用户对齐。
+
+   补建软链后顺手删掉该 skills 目录里的 `.gitkeep`（第 1 件事重跑脚本可能在空目录里放了占位）。
 4. 其余一概不动：AGENTS.md、settings.json、.gitignore、specs/、issues 都属于项目自己，刷新与它们无关。
 
 ## 第 1 步：环境检查

@@ -16,7 +16,7 @@
 | `.claude/settings.json` | 团队共享设置：权限白名单、hooks 注册等（签进 git） | 同一个权限提示点过三次 → 加进 `permissions.allow`；某事必须每次自动发生 → 配 hook |
 | `.claude/settings.local.json` | 个人设置覆盖（已 gitignore） | — |
 | `.claude/rules/` | 路径作用域规则，Claude 碰到匹配文件时才加载 | 某类文件有跨位置的统一约束（如「API 层必须做输入校验」） |
-| `.agents/skills/` | 共享 skill 的**真身**（SKILL.md 是开放标准，`.agents/skills/` 是 Codex / Cursor / Gemini CLI 等采用的通用目录） | 同一个 prompt 或流程手打/手贴第三遍 → 新共享 skill 放这里并建双软链（四个 spec-* skill 随样板预装，是唯一预填例外——方法论本身） |
+| `.agents/skills/` | 共享 skill 的**真身**（SKILL.md 是开放标准，`.agents/skills/` 是 Codex / Cursor / Gemini CLI 等采用的通用目录） | 同一个 prompt 或流程手打/手贴第三遍 → 新共享 skill 放这里并建双软链（五个 spec-* skill 随样板预装，是唯一预填例外——方法论本身） |
 | `.claude/skills/` | Claude Code 的 skill 发现目录，只放指向 `.agents/skills/` 的软链 | 不单独维护——随共享 skill 一起建链（真身直接放这里的情况极少：仅当 skill 深度绑定 CC 专属能力且确实不该被其他工具看到） |
 | `.codex/skills/` | Codex 的 skill 发现目录，只放指向 `.agents/skills/` 的软链 | 不单独维护——随共享 skill 一起建链 |
 | `.claude/agents/` | 自定义 subagent（独立上下文，只返回摘要） | 某类副任务总把主对话灌满之后不再引用的输出 |
@@ -227,7 +227,7 @@ PRD 和原型通常是**渐进式**的——不必等全部想清楚才开工，
 2. 进入下面的标准开发循环，把这批 issue 做完。
 3. PRD 又完善一块 → 回到 1。
 
-一次性把 SPEC 写全，只是这个循环恰好跑一圈的特例。`/project-bootstrap` 时做过访谈和设计的，第一圈已经走完，直接从 2 开始；当时跳过了的，从 1 开始。四个 spec-* 是跨工具共享的 skill（真身在 `.agents/skills/`）：Claude Code 中用 `/spec-interview` 等斜杠调用，Codex 中用 `$spec-interview` 等（或在 `/skills` 列表里选）——本文写斜杠命令时同理换算；它们只接受显式调用，agent 不会自作主张启动。
+一次性把 SPEC 写全，只是这个循环恰好跑一圈的特例。`/project-bootstrap` 时做过访谈和设计的，第一圈已经走完，直接从 2 开始；当时跳过了的，从 1 开始。五个 spec-* 是跨工具共享的 skill（真身在 `.agents/skills/`）：Claude Code 中用 `/spec-interview` 等斜杠调用，Codex 中用 `$spec-interview` 等（或在 `/skills` 列表里选）——本文写斜杠命令时同理换算；它们只接受显式调用，agent 不会自作主张启动。
 
 三环各自独立断点：**每个 skill 的草稿 = 它正式产物文件名的 `.md` 换成 `.draft.md`**（如 `docs/specs/订单.draft.md`），随写随落盘、**进 git**（同一工作树换会话随时能接；提交并推送后，换人、换机器也能接力）；产物转正即删草稿。环与环之间只靠产物文件衔接：ADR 更新了，设计要不要跟进由你决定（重跑 `/spec-design`）；没有 SPEC 就跑 `/spec-issues` 会被提示先设计——**访谈完不想设计、设计完不想拆 issue，都可以停，回来接着跑对应的 skill 就行**。需求决策 ADR 追加式保留全部历史；issue 执行状态只看 GitHub、本地不记进度。架构导读住 `docs/ARCHITECTURE.md`（全局图 + 分层导读 + 横切约定 + 关键决策索引；首轮设计拍板后创建，只在结构或全局约定变化时更新，「为什么」一律住 ADR）；SPEC 里另有本轮模块图；模块稳态详图不单独维护——`/spec-dev-doc` 生成设计文档时照 SPEC 已有信息现画，画不出的部分就是 SPEC 缺口。
 
@@ -235,7 +235,9 @@ PRD 和原型通常是**渐进式**的——不必等全部想清楚才开工，
 
 模块 SPEC 定稿后，随时 `/spec-dev-doc <模块> [版本号]`——把 SPEC 投影成一份自包含 HTML 设计文档落 `docs/review/`（SPEC 改了就覆盖当前活跃的那一份；要新版本时另起一份，旧版冻结成快照）。它**只读 SPEC 一份输入**，只取前五栏（含图），「怎么做」一个字不取，例外只有图下的两样：时序图、状态图的「时限」「失败时」两行，以及图里写了字段名时的字段归属表；固定的只有开篇「整体设计」与收尾「已决登记」「未决登记」这三章，中间的章镜像 SPEC；全文只有一个端到端例子、文字 ≤6 屏（图不计）。因为只有一个输入，它没法二次创作——实现细节不进来，也就不需要靠折叠压缩。它是三环的**旁路**：只读 SPEC、不产生三环的输入；看稿反馈里的实质新信息由你消化，需求级走 `/spec-interview` 增量轮、设计级走 `/spec-design` 修订轮，回流后重生成。
 
-projkit 母本升级后（skill 规则改进、同步规则改进），可以刷新本项目的四个 spec-* skill 和本文件。project-bootstrap skill 只存在于 projkit 仓库、不随样板分发，所以要**在 projkit 的 checkout 里开会话**，跑 `/project-bootstrap <本项目路径>`（Codex 中 `$project-bootstrap`）——刷新只碰方法论文件，AGENTS.md、settings、specs、issues 都不动，覆盖前会展示 diff。
+要把原型讲给别人听时，`/spec-proto-tour <主题>` 给原型 HTML 叠一层讲解标注，产出落 `docs/解读/`。它同样是三环的旁路，不改原型和 PRD；原型改版后按锚点自检，只修失效的条目。
+
+projkit 母本升级后（skill 规则改进、同步规则改进），可以刷新本项目的五个 spec-* skill 和本文件。project-bootstrap skill 只存在于 projkit 仓库、不随样板分发，所以要**在 projkit 的 checkout 里开会话**，跑 `/project-bootstrap <本项目路径>`（Codex 中 `$project-bootstrap`）——刷新只碰方法论文件，AGENTS.md、settings、specs、issues 都不动，覆盖前会展示 diff。
 
 **需求变更按触及层级分流**：只动单模块内部 → 直接重跑该模块的三环；触及全局（新增/删模块、改边界、横切约定变动）→ 先 `/spec-interview 全局` + `/spec-design 全局`（更新架构导读，**波及清单**写进跨模块 ADR），再只对被点名的模块重走模块轮，没被点名的零改动。两条路最后都靠 `/spec-issues` 存量同步收口——issue 是 mini-spec，SPEC 变了它就过期了，该改就改、该关就关（带原因）；已完成部分的变更开新 issue，不重开旧的。
 

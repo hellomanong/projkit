@@ -1,6 +1,6 @@
 ---
 name: spec-dev-doc
-description: 把某模块已定稿的 SPEC（specs/<模块>.md）投影成一份自包含 HTML 设计文档（docs/review/，一个模块一份，SPEC 改了就覆盖它），给要拍板的人看；图一律交给 diagram-design 画。仅限用户显式调用（Claude Code 中 /spec-dev-doc <模块名>，Codex 中 $spec-dev-doc），不要自动触发。
+description: 把某模块已定稿的 SPEC（docs/specs/<模块>.md）投影成一份自包含 HTML 设计文档（docs/review/，一个模块一份，SPEC 改了就覆盖它），给要拍板的人看；图一律交给 diagram-design 画。仅限用户显式调用（Claude Code 中 /spec-dev-doc <模块名>，Codex 中 $spec-dev-doc），不要自动触发。
 argument-hint: <模块名> [版本号]
 disable-model-invocation: true
 ---
@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 三环流水线的**旁路**，不是必经环：只读 SPEC、不产生三环的输入。
 
-**输入只有一份**：`specs/<模块>.md`（必须已定稿——不存在 → 提示先跑 `/spec-design`，不硬编）。只读它，不收其他来源——别的文档在 SPEC 定稿时已经消化完了。
+**输入只有一份**：`docs/specs/<模块>.md`（必须已定稿——不存在 → 提示先跑 `/spec-design`，不硬编）。只读它，不收其他来源——别的文档在 SPEC 定稿时已经消化完了。
 
 **产出** = `docs/review/<模块>-v<版本>.html`，自包含单文件，微信/邮件直接发、浏览器直接看。只收模块范围：全局全貌住 `docs/ARCHITECTURE.md`。全程简体中文。
 
@@ -41,7 +41,7 @@ disable-model-invocation: true
    - 用户要新版本时才另起一份：给了号就用那个号，没给就末段 +1（v0.5 → v0.6、v0.9 → v0.10，不自动进大版本）；新建的成为新活跃件，旧的就此冻结成快照、不再跟 SPEC 同步。
 
    开工先比一次日期：SPEC 的定稿日期晚于设计文档文件头登记的来源日期，开口时一并说明。
-2. **收料**：只读 `specs/<模块>.md`，全读。SPEC 里缺的东西就是缺的，不去别处找补。用户明确要求对账旧版时（如「对账 v0.3」）：加读该版，把「旧版有、SPEC 没有」的实质内容列成清单逐条拍板——回流进 SPEC（走 `/spec-design` 修订轮）或放弃，不静默丢，也不就地补进本稿；不点名就不读旧版。
+2. **收料**：只读 `docs/specs/<模块>.md`，全读。SPEC 里缺的东西就是缺的，不去别处找补。用户明确要求对账旧版时（如「对账 v0.3」）：加读该版，把「旧版有、SPEC 没有」的实质内容列成清单逐条拍板——回流进 SPEC（走 `/spec-design` 修订轮）或放弃，不静默丢，也不就地补进本稿；不点名就不读旧版。
 3. **投影**：先搭「整体设计」章，再按 `reference.md` §一 组织中间章节，每章取前五栏。「要你拍的」「缺口」两栏 SPEC 里没有就整栏不写，不留「无」占位。SPEC 里标了「待补」「装配时定」的原样带过来，不替它补。最后把 SPEC「决策与未决登记」章的两张表投影成收尾两章。
 4. **画图**：每张图先用一句话写出「这张图要让读者看懂什么」，写不出就不画，也不解释为什么不画。要画的一律交给 `diagram-design`。分工照 `docs/PROJECT-GUIDE.md`「画图规范」开头：内容和文字归我们，图种、尺寸、样式、排布、走线、配色、拆不拆归它——它说要拆成两张就照拆。
    ① **喂料**：

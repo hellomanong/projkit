@@ -43,10 +43,9 @@ DIRS=(
   .claude/workflows
   docs
   docs/adr
-  docs/prd
-  docs/prd/解读
+  docs/解读
   docs/review
-  specs
+  docs/specs
 )
 
 for d in "${DIRS[@]}"; do
